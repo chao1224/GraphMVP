@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 source $HOME/.bashrc
-conda activate graphMVP
+conda activate GraphMVP
 conda deactivate
-conda activate graphMVP
+conda activate GraphMVP
 
 
 echo $@
