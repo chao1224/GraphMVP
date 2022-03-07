@@ -5,7 +5,6 @@ import pickle
 from collections import Counter
 from multiprocessing import Pool
 import tqdm
-from rdkit import Chem
 
 
 BOND_FEATURES = ['BondType', 'BondDir']
