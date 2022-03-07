@@ -1,19 +1,19 @@
+import sys
 import time
-import torch
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
 
-import sys
 sys.path.insert(0, '../src_classification')
 
 from config import args
-from torch_geometric.nn import global_mean_pool
 from dataloader import DataLoaderSubstructContext
-from util import cycle_index
-
 from datasets_complete_feature import MoleculeDatasetComplete
 from models_complete_feature import GNNComplete
+from torch_geometric.nn import global_mean_pool
+from util import cycle_index
 from util_complete_feature import ExtractSubstructureContextPair
 
 

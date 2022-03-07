@@ -1,1 +1,1 @@
-from .molecule_gnn_model import GNNComplete, GNN_graphpredComplete
+from .molecule_gnn_model import GNN_graphpredComplete, GNNComplete

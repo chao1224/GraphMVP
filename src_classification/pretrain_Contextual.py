@@ -1,17 +1,18 @@
-import torch
+import time
+from os.path import join
+
 import numpy as np
 import pandas as pd
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
-import time
 from config import args
-from os.path import join
-from util import get_num_task
-from datasets import MoleculeContextualDataset
 from models import GNN, GNN_graphpred
 from sklearn.metrics import roc_auc_score
 from torch_geometric.data import DataLoader
+from util import get_num_task
+
+from datasets import MoleculeContextualDataset
 
 
 def compute_accuracy(pred, target):

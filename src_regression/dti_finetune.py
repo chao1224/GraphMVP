@@ -1,27 +1,23 @@
 import argparse
-import pandas as pd
-import os
-import time
 import copy
-from tqdm import tqdm
+import os
+import sys
+import time
+
 import numpy as np
-
-from torch_geometric.data import DataLoader
-
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from torch_geometric.data import DataLoader
+from tqdm import tqdm
 
-import sys
 sys.path.insert(0, '../src_classification')
-from util import rmse, mse, pearson, spearman, ci
-
-
-from models import ProteinModel, MoleculeProteinModel
 from datasets_complete_feature import MoleculeProteinDataset
-
+from models import MoleculeProteinModel, ProteinModel
 from models_complete_feature import GNNComplete
+from util import ci, mse, pearson, rmse, spearman
 
 
 def train(repurpose_model, device, dataloader, optimizer):

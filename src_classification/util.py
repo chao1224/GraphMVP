@@ -1,14 +1,16 @@
 
-import torch
-import random
 import logging
-import numpy as np
-import torch.nn as nn
-import networkx as nx
+import random
 from math import sqrt
-from scipy import stats
-from rdkit.Chem import AllChem
+
+import networkx as nx
+import numpy as np
+import torch
+import torch.nn as nn
 import torch.nn.functional as F
+from rdkit.Chem import AllChem
+from scipy import stats
+
 from datasets import graph_data_obj_to_nx_simple, nx_to_graph_data_obj_simple
 
 logger = logging.getLogger()

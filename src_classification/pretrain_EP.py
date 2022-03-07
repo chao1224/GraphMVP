@@ -1,15 +1,16 @@
 import time
-import torch
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
-from models import GNN
 from config import args
-from util import NegativeEdge
 from dataloader import DataLoaderAE
-from datasets import MoleculeDataset
+from models import GNN
 from torch_geometric.nn import global_mean_pool
+from util import NegativeEdge
+
+from datasets import MoleculeDataset
 
 
 def do_EdgePred(node_repr, batch, criterion=nn.BCEWithLogitsLoss()):

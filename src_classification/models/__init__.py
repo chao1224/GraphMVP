@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 from torch_geometric.nn.inits import uniform
 
-from .schnet import SchNet
-from .molecule_gnn_model import GNN, GNN_graphpred
 from .auto_encoder import AutoEncoder, VariationalAutoEncoder
+from .molecule_gnn_model import GNN, GNN_graphpred
+from .schnet import SchNet
 
 
 class Discriminator(nn.Module):

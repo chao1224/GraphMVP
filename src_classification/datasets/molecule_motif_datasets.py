@@ -1,12 +1,14 @@
 import os
-import numpy as np
-from tqdm import tqdm
 from itertools import repeat
+
+import numpy as np
+import torch
 from descriptastorus.descriptors import rdDescriptors
+from torch_geometric.data import Data, InMemoryDataset
+from tqdm import tqdm
+
 #  pip install git+https://github.com/bp-kelley/descriptastorus
 
-import torch
-from torch_geometric.data import Data, InMemoryDataset
 
 
 RDKIT_PROPS = ['fr_Al_COO', 'fr_Al_OH', 'fr_Al_OH_noTert', 'fr_ArN',

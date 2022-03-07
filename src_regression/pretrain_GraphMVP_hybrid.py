@@ -1,30 +1,32 @@
+import sys
 import time
-import torch
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
 # Use local customized SSL
 from pretrain_AM import do_AttrMasking
 from pretrain_CP import do_ContextPred
 
-import sys
 sys.path.insert(0, '../src_classification')
-from tqdm import tqdm
 from config import args
-from torch_geometric.data import DataLoader
-from torch_geometric.nn import global_mean_pool
-from models import SchNet, AutoEncoder, VariationalAutoEncoder, Discriminator
-from dataloader import DataLoaderAE, DataLoaderMasking, DataLoaderSubstructContext3D
-from util import dual_CL, NegativeEdge, do_GraphCL, do_GraphCLv2, update_augmentation_probability_JOAO, update_augmentation_probability_JOAOv2
-
+from dataloader import (DataLoaderAE, DataLoaderMasking,
+                        DataLoaderSubstructContext3D)
+from models import AutoEncoder, Discriminator, SchNet, VariationalAutoEncoder
+from models_complete_feature import GNNComplete
 from pretrain_EP import do_EdgePred
 from pretrain_IG import do_InfoGraph
-from datasets import Molecule3DMaskingDataset, MoleculeGraphCLMaskingDataset
-
-from models_complete_feature import GNNComplete
+from torch_geometric.data import DataLoader
+from torch_geometric.nn import global_mean_pool
+from tqdm import tqdm
+from util import (NegativeEdge, do_GraphCL, do_GraphCLv2, dual_CL,
+                  update_augmentation_probability_JOAO,
+                  update_augmentation_probability_JOAOv2)
 # overlap the transfomration for AM and CP
-from util_complete_feature import MaskAtom, ExtractSubstructureContextPair
+from util_complete_feature import ExtractSubstructureContextPair, MaskAtom
+
+from datasets import Molecule3DMaskingDataset, MoleculeGraphCLMaskingDataset
 
 
 def save_model(save_best, epoch=None):

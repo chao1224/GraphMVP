@@ -1,17 +1,19 @@
-import os
+import argparse
 import json
-import torch
+import os
 import pickle
 import random
-import argparse
+from itertools import repeat
+from os.path import join
+
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
+import torch
 from rdkit import Chem
-from os.path import join
-from itertools import repeat
-from datasets import allowable_features
 from torch_geometric.data import Data, InMemoryDataset
+from tqdm import tqdm
+
+from datasets import allowable_features
 
 
 def mol_to_graph_data_obj_simple_3D(mol):

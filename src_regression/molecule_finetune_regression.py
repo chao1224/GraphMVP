@@ -1,20 +1,21 @@
 import os
-import torch
+import sys
+
 import numpy as np
 import pandas as pd
+import torch
 import torch.nn as nn
 import torch.optim as optim
 
-import sys
 sys.path.insert(0, '../src_classification')
-from config import args
 from os.path import join
-from torch_geometric.data import DataLoader
-from splitters import scaffold_split, random_split, random_scaffold_split
-from sklearn.metrics import mean_absolute_error, mean_squared_error
 
+from config import args
 from datasets_complete_feature import MoleculeDatasetComplete
-from models_complete_feature import GNNComplete, GNN_graphpredComplete
+from models_complete_feature import GNN_graphpredComplete, GNNComplete
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+from splitters import random_scaffold_split, random_split, scaffold_split
+from torch_geometric.data import DataLoader
 
 
 def train_general(model, device, loader, optimizer):

@@ -3,18 +3,19 @@
 #  Ref: https://github.com/snap-stanford/pretrain-gnns/blob/master/chem/loader.py
 
 import os
-import torch
 import pickle
+from itertools import chain, repeat
+
+import networkx as nx
 import numpy as np
 import pandas as pd
-import networkx as nx
+import torch
 from rdkit import Chem
-from torch.utils import data
-from itertools import repeat, chain
 from rdkit.Chem import AllChem, Descriptors
 from rdkit.Chem.rdMolDescriptors import GetMorganFingerprintAsBitVect
-from torch_geometric.data import Data, InMemoryDataset, download_url, extract_zip
-
+from torch.utils import data
+from torch_geometric.data import (Data, InMemoryDataset, download_url,
+                                  extract_zip)
 
 # todo: more datasets can be included in GEOM pre-training
 # allowable node and edge features

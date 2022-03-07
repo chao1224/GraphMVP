@@ -1,14 +1,15 @@
 import time
-import torch
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
 from config import args
 from models import GNN
 from torch_geometric.data import DataLoader
-from datasets import MoleculeDataset, MoleculeDatasetGPT
 from torch_geometric.nn import global_mean_pool
+
+from datasets import MoleculeDataset, MoleculeDatasetGPT
 
 
 def compute_accuracy(pred, target):

@@ -1,10 +1,10 @@
+import random
+
 import numpy as np
 import torch
-import random
-from tqdm import tqdm
-
 from torch_geometric.data import Data, InMemoryDataset
 from torch_geometric.utils import subgraph
+from tqdm import tqdm
 
 
 def search_graph(graph):

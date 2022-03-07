@@ -1,13 +1,12 @@
 import os
-import pandas as pd
-import numpy as np
-from rdkit.Chem import AllChem
 
+import numpy as np
+import pandas as pd
 import torch
+from rdkit.Chem import AllChem
 from torch_geometric.data import InMemoryDataset
 
 from .molecule_datasets import mol_to_graph_data_obj_simple
-
 
 seq_voc = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
 seq_dict = {v:(i+1) for i,v in enumerate(seq_voc)}

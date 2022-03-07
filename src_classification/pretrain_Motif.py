@@ -1,14 +1,14 @@
-import torch
 import numpy as np
 import pandas as pd
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
 from config import args
-from datasets import MoleculeMotifDataset, RDKIT_PROPS
 from models import GNN, GNN_graphpred
 from sklearn.metrics import roc_auc_score
 from torch_geometric.data import DataLoader
+
+from datasets import RDKIT_PROPS, MoleculeMotifDataset
 
 
 def train(model, device, loader, optimizer):

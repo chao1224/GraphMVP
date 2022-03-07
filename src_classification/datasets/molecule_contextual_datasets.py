@@ -1,17 +1,19 @@
-import os
-from itertools import repeat
-from rdkit import Chem
-import math
-import numpy as np
 import json
-from tqdm import tqdm
-import pickle
+import math
 import multiprocessing as mp
+import os
+import pickle
 import sys
+from itertools import repeat
 
+import numpy as np
 import torch
+from rdkit import Chem
 from torch_geometric.data import Data, InMemoryDataset
-from .molecule_contextual_datasets_utils import MolVocab, atom_to_vocab, bond_to_vocab
+from tqdm import tqdm
+
+from .molecule_contextual_datasets_utils import (MolVocab, atom_to_vocab,
+                                                 bond_to_vocab)
 
 
 def load_molecule(smiles, drugs_summary, dir_name):

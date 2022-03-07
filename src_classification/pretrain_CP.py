@@ -1,15 +1,16 @@
 import time
-import torch
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
-from models import GNN
 from config import args
-from datasets import MoleculeDataset
-from torch_geometric.nn import global_mean_pool
 from dataloader import DataLoaderSubstructContext
+from models import GNN
+from torch_geometric.nn import global_mean_pool
 from util import ExtractSubstructureContextPair, cycle_index
+
+from datasets import MoleculeDataset
 
 
 def do_ContextPred(batch, criterion, args, molecule_substruct_model,

@@ -1,17 +1,19 @@
-import torch
+from os.path import join
+
 import numpy as np
 import pandas as pd
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
 from config import args
-from os.path import join
-from util import get_num_task
-from datasets import MoleculeDataset
 from models import GNN, GNN_graphpred
-from sklearn.metrics import roc_auc_score, average_precision_score, accuracy_score
+from sklearn.metrics import (accuracy_score, average_precision_score,
+                             roc_auc_score)
+from splitters import random_scaffold_split, random_split, scaffold_split
 from torch_geometric.data import DataLoader
-from splitters import scaffold_split, random_split, random_scaffold_split
+from util import get_num_task
+
+from datasets import MoleculeDataset
 
 
 def train_general(model, device, loader, optimizer):

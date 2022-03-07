@@ -1,17 +1,16 @@
 import os
-import warnings
 import os.path as osp
+import warnings
 from math import pi as PI
 
 import ase
+import numpy as np
 import torch
 import torch.nn.functional as F
-from torch.nn import Embedding, Sequential, Linear, ModuleList
-import numpy as np
-
-from torch_scatter import scatter
+from torch.nn import Embedding, Linear, ModuleList, Sequential
 from torch_geometric.data.makedirs import makedirs
-from torch_geometric.nn import radius_graph, MessagePassing
+from torch_geometric.nn import MessagePassing, radius_graph
+from torch_scatter import scatter
 
 try:
     import schnetpack as spk

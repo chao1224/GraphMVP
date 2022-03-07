@@ -4,12 +4,11 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch_scatter import scatter_add
+from torch_geometric.nn import (MessagePassing, global_add_pool,
+                                global_max_pool, global_mean_pool)
 from torch_geometric.nn.inits import glorot, zeros
 from torch_geometric.utils import add_self_loops, softmax
-from torch_geometric.nn import MessagePassing, global_add_pool, \
-    global_mean_pool, global_max_pool
-
+from torch_scatter import scatter_add
 
 num_atom_type = 120  # including the extra mask tokens
 num_chirality_tag = 3

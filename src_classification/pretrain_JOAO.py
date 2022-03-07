@@ -1,15 +1,16 @@
-import time
-import torch
 import argparse
+import time
+from itertools import repeat
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
 from models import GNN
-from itertools import repeat
-from datasets import MoleculeDataset_graphcl
-from torch_geometric.nn import global_mean_pool
 from torch_geometric.data import DataLoader
+from torch_geometric.nn import global_mean_pool
+
+from datasets import MoleculeDataset_graphcl
 
 
 class graphcl(nn.Module):

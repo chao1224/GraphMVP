@@ -1,22 +1,26 @@
 import time
-import torch
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
-from tqdm import tqdm
 from config import args
-from torch_geometric.data import DataLoader
-from torch_geometric.nn import global_mean_pool
-from models import GNN, SchNet, AutoEncoder, VariationalAutoEncoder, Discriminator
-from dataloader import DataLoaderAE, DataLoaderMasking, DataLoaderSubstructContext3D
-from util import dual_CL, NegativeEdge, MaskAtom, ExtractSubstructureContextPair, \
-    do_GraphCL, do_GraphCLv2, update_augmentation_probability_JOAO, update_augmentation_probability_JOAOv2
-
-from pretrain_EP import do_EdgePred
-from pretrain_IG import do_InfoGraph
+from dataloader import (DataLoaderAE, DataLoaderMasking,
+                        DataLoaderSubstructContext3D)
+from models import (GNN, AutoEncoder, Discriminator, SchNet,
+                    VariationalAutoEncoder)
 from pretrain_AM import do_AttrMasking
 from pretrain_CP import do_ContextPred
+from pretrain_EP import do_EdgePred
+from pretrain_IG import do_InfoGraph
+from torch_geometric.data import DataLoader
+from torch_geometric.nn import global_mean_pool
+from tqdm import tqdm
+from util import (ExtractSubstructureContextPair, MaskAtom, NegativeEdge,
+                  do_GraphCL, do_GraphCLv2, dual_CL,
+                  update_augmentation_probability_JOAO,
+                  update_augmentation_probability_JOAOv2)
+
 from datasets import Molecule3DMaskingDataset, MoleculeGraphCLMaskingDataset
 
 

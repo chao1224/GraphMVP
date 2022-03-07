@@ -3,18 +3,20 @@
 #  Ref: https://github.com/snap-stanford/pretrain-gnns/blob/master/chem/loader.py
 
 import os
-import torch
 import pickle
+from itertools import chain, repeat
+
+import networkx as nx
 import numpy as np
 import pandas as pd
-import networkx as nx
+import torch
+from ogb.utils.features import atom_to_feature_vector, bond_to_feature_vector
 from rdkit import Chem
-from torch.utils import data
-from itertools import repeat, chain
 from rdkit.Chem import AllChem, Descriptors
 from rdkit.Chem.rdMolDescriptors import GetMorganFingerprintAsBitVect
-from torch_geometric.data import Data, InMemoryDataset, download_url, extract_zip
-from ogb.utils.features import atom_to_feature_vector, bond_to_feature_vector
+from torch.utils import data
+from torch_geometric.data import (Data, InMemoryDataset, download_url,
+                                  extract_zip)
 
 
 def mol_to_graph_data_obj_simple(mol):

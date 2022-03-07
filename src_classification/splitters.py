@@ -1,8 +1,9 @@
-import torch
 import random
-import numpy as np
-from itertools import compress
 from collections import defaultdict
+from itertools import compress
+
+import numpy as np
+import torch
 from rdkit.Chem.Scaffolds import MurckoScaffold
 from sklearn.model_selection import StratifiedKFold
 

@@ -1,5 +1,6 @@
+from batch import (BatchAE, BatchMasking, BatchSubstructContext,
+                   BatchSubstructContext3D)
 from torch.utils.data import DataLoader
-from batch import BatchSubstructContext, BatchMasking, BatchAE, BatchSubstructContext3D
 
 
 class DataLoaderSubstructContext(DataLoader):

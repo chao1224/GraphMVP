@@ -1,21 +1,21 @@
-import time
-import torch
-import numpy as np
-import torch.optim as optim
-import torch.nn.functional as F
-
 import sys
+import time
+
+import numpy as np
+import torch
+import torch.nn.functional as F
+import torch.optim as optim
+
 sys.path.insert(0, '../src_classification')
 from config import args
-from util import dual_CL
-from torch_geometric.nn import global_mean_pool
-from torch_geometric.data import DataLoader
-from models import SchNet, AutoEncoder, VariationalAutoEncoder
-from tqdm import tqdm
-from datasets import Molecule3DMaskingDataset
-from torch_geometric.nn import global_mean_pool
-
+from models import AutoEncoder, SchNet, VariationalAutoEncoder
 from models_complete_feature import GNNComplete
+from torch_geometric.data import DataLoader
+from torch_geometric.nn import global_mean_pool
+from tqdm import tqdm
+from util import dual_CL
+
+from datasets import Molecule3DMaskingDataset
 
 
 def save_model(save_best):

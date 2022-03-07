@@ -1,15 +1,17 @@
-import copy
-import torch
-import random
 import argparse
+import copy
+import random
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
 from models import GNN
 from torch_geometric.data import DataLoader
+from torch_geometric.nn import (global_add_pool, global_max_pool,
+                                global_mean_pool)
+
 from datasets import MoleculeDataset
-from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 
 
 class ProjectNet(nn.Module):

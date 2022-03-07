@@ -1,15 +1,16 @@
 import time
-import torch
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
-from models import GNN
 from config import args
-from util import MaskAtom
-from datasets import MoleculeDataset
 from dataloader import DataLoaderMasking
+from models import GNN
 from torch_geometric.nn import global_mean_pool
+from util import MaskAtom
+
+from datasets import MoleculeDataset
 
 
 def compute_accuracy(pred, target):

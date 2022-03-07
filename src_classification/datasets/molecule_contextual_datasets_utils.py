@@ -4,8 +4,8 @@ The contextual property.
 import pickle
 from collections import Counter
 from multiprocessing import Pool
-import tqdm
 
+import tqdm
 
 BOND_FEATURES = ['BondType', 'BondDir']
 

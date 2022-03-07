@@ -1,18 +1,21 @@
 
 # import os
 import time
-import torch
-import numpy as np
-import torch.optim as optim
 
-from tqdm import tqdm
+import numpy as np
+import torch
+import torch.optim as optim
 from config import args
-from util import dual_CL
-from datasets import Molecule3DDataset
+from models import (GNN, AutoEncoder, EnergyVariationalAutoEncoder,
+                    ImportanceWeightedAutoEncoder,
+                    NormalizingFlowVariationalAutoEncoder, SchNet,
+                    VariationalAutoEncoder)
 from torch_geometric.data import DataLoader
 from torch_geometric.nn import global_mean_pool
-from models import GNN, SchNet, AutoEncoder, VariationalAutoEncoder, \
-    NormalizingFlowVariationalAutoEncoder, ImportanceWeightedAutoEncoder, EnergyVariationalAutoEncoder
+from tqdm import tqdm
+from util import dual_CL
+
+from datasets import Molecule3DDataset
 
 
 def save_model(save_best):

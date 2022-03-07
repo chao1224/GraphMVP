@@ -1,15 +1,16 @@
 import time
-import torch
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-
 from config import args
-from util import cycle_index
 from models import GNN, Discriminator
 from torch_geometric.data import DataLoader
-from datasets import MoleculeDataset
 from torch_geometric.nn import global_mean_pool
+from util import cycle_index
+
+from datasets import MoleculeDataset
 
 
 def do_InfoGraph(node_repr, molecule_repr, batch,
