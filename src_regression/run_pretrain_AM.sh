@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 source $HOME/.bashrc
-conda activate PC3D
+conda activate graphMVP
 conda deactivate
-conda activate PC3D
+conda activate graphMVP
 
 echo $@
 date

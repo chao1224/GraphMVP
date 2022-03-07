@@ -13,8 +13,6 @@
 
 ###############SBATCH --gres=gpu:v100l:1
 
-cd ..
-
 echo "My SLURM_ARRAY_TASK_ID: " $SLURM_ARRAY_TASK_ID
 export dataset_list=(esol freesolv lipophilicity malaria cep)
 export split_list=(scaffold random)

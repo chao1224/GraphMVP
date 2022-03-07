@@ -13,8 +13,6 @@
 
 ###############SBATCH --gres=gpu:v100l:1
 
-cd ../
-
 echo "My SLURM_ARRAY_TASK_ID: " $SLURM_ARRAY_TASK_ID
 export dataset_list=(davis kiba)
 export seed_list=(0 1 2 3 4 5 6 7 8 9)
