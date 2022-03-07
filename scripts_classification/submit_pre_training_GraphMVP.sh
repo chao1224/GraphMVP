@@ -3,11 +3,7 @@
 cd ../src_classification
 
 
-export mode=3D_hybrid_02_masking
-export dataset_list=(GEOM_3D_nmol50000_nconf1_nupper1000)
-export epochs=100
-export time=3
-
+export mode=GraphMVP
 export dataset_list=(GEOM_3D_nmol50000_nconf5_nupper1000)
 export epochs=100
 export time=9

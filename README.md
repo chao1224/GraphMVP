@@ -90,7 +90,7 @@ For dataset preprocessing, please follow the instruction [here]](https://github.
 
 In the latest scripts, we use `GraphMVP` for the trivial GraphMVP (Eq. 7 in the paper), and `GraphMVP_hybrid` includes two variants adding extra 2D SSL pretext tasks (Eq 8. in the paper).
 In the previous scripts, we call these two terms as `3D_hybrid_02_masking` and `3D_hybrid_03_masking` respectively.
-We clean up for the latest scripts, but there could be some missing parts in the previous scripts (for reproduciblity).
+This could show up in some pre-trained log files [here](https://drive.google.com/drive/folders/1uPsBiQF3bfeCAXSDd4JfyXiTh-qxYfu6?usp=sharing).
 
 | GraphMVP | Latest scripts | Previous scripts |
 | :--: | :--: | :--: |

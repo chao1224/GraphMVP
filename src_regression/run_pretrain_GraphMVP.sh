@@ -8,6 +8,6 @@ conda activate PC3D
 echo $@
 date
 echo "start"
-python pretrain_3D_hybrid_03_masking.py $@
+python pretrain_GraphMVP.py $@
 echo "end"
 date
