@@ -288,17 +288,12 @@ class Molecule3DDataset(InMemoryDataset):
 if __name__ == '__main__':
     random.seed(0)
     np.random.seed(0)
-    # torch.manual_seed(0)
+    torch.manual_seed(0)
     # device = torch.device('cuda:' + str(args.device)) \
     #     if torch.cuda.is_available() else torch.device('cpu')
     # if torch.cuda.is_available():
     #     torch.cuda.manual_seed_all(0)
     #     torch.cuda.set_device(args.device)
-
-    # Molecule3DDataset(root='../datasets/GEOM_3D_01/', n_mol=50000, n_conf=1)
-    # Molecule3DDataset(root='../datasets/GEOM_3D_02/', n_mol=50000, n_conf=20)
-    # Molecule3DDataset(root='../datasets/GEOM_3D_03/', n_mol=25000, n_conf=20)
-    # Molecule3DDataset(root='../datasets/GEOM_3D_04/', n_mol=100, n_conf=1)
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--sum', type=bool, default=False, help='cal dataset stats')
@@ -313,7 +308,6 @@ if __name__ == '__main__':
             json.dump(sum_list, fout)
 
     else:
-        # n_mol, n_conf = 1000000, 5
         n_mol, n_conf, n_upper = args.n_mol, args.n_conf, args.n_upper
         root_2d = '../datasets/GEOM_2D_nmol%d_nconf%d_nupper%d/' % (n_mol, n_conf, n_upper)
         root_3d = '../datasets/GEOM_3D_nmol%d_nconf%d_nupper%d/' % (n_mol, n_conf, n_upper)
@@ -323,45 +317,3 @@ if __name__ == '__main__':
         # Generate 2D Datasets (2D SMILES)
         Molecule3DDataset(root=root_2d, n_mol=n_mol, n_conf=n_conf, n_upper=n_upper,
                           smiles_copy_from_3D_file='%s/processed/smiles.csv' % root_3d)
-
-    # Molecule3DDataset(root='../datasets/GEOM_01_3D_New/', n_mol=50000, n_conf=10)
-    # print('Done with 3D dataset\n\n\n')
-    # Molecule3DDataset(
-    #     smiles_copy_from_3D_file='../datasets/GEOM_01_3D_New/processed/smiles.csv',
-    #     root='../datasets/GEOM_01_2D_New/', n_mol=50000, n_conf=10)
-    #
-    # Molecule3DDataset(root='../datasets/GEOM_02_3D_New/', n_mol=100000, n_conf=5)
-    # print('Done with 3D dataset\n\n\n')
-    # Molecule3DDataset(
-    #     smiles_copy_from_3D_file='../datasets/GEOM_02_3D_New/processed/smiles.csv',
-    #     root='../datasets/GEOM_02_2D_New/', n_mol=100000, n_conf=5)
-    #
-    # Molecule3DDataset(root='../datasets/GEOM_03_3D_New/', n_mol=304466, n_conf=5)
-    # print('Done with 3D dataset\n\n\n')
-    # Molecule3DDataset(
-    #     smiles_copy_from_3D_file='../datasets/GEOM_03_3D_New/processed/smiles.csv',
-    #     root='../datasets/GEOM_03_3D_New/', n_mol=304466, n_conf=5)
-    #
-    # Molecule3DDataset(root='../datasets/GEOM_04_3D_New/', n_mol=304466, n_conf=10)
-    # print('Done with 3D dataset\n\n\n')
-    # Molecule3DDataset(
-    #     smiles_copy_from_3D_file='../datasets/GEOM_04_3D_New/processed/smiles.csv',
-    #     root='../datasets/GEOM_04_3D_New/', n_mol=304466, n_conf=10)
-    #
-    # Molecule3DDataset(root='../datasets/GEOM_test/', n_mol=1000, n_conf=5)
-    # print('Done with 3D dataset\n\n\n')
-    # Molecule3DDataset(
-    #     smiles_copy_from_3D_file='../datasets/GEOM_test/processed/smiles.csv',
-    #     root='../datasets/GEOM_test/', n_mol=1000, n_conf=5)
-    #
-    # from torch_geometric.data import DataLoader
-    # dataset = Molecule3DDataset(root='../datasets/GEOM_02_3D/', n_mol=100, n_conf=10)
-    # loader = DataLoader(dataset, batch_size=128, shuffle=False, num_workers=8)
-    # for b in loader:
-    #     print(b.batch, b.id, b.mol_id)
-    #
-    # print('Done with 3D dataset\n\n\n')
-    # Molecule3DDataset(
-    #     smiles_copy_from_3D_file='../datasets/GEOM_02_3D/processed/smiles.csv',
-    #     root='../datasets/GEOM_02_2D/', n_mol=50000, n_conf=10)
-    #

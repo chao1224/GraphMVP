@@ -520,28 +520,6 @@ class MoleculeDataset(InMemoryDataset):
                 _load_pcba_dataset(self.raw_paths[0])
             data_list, data_smiles_list = shared_extractor(
                 smiles_list, rdkit_mol_objs, labels)
-        
-        # elif self.dataset == 'pcba_pretrain':
-        #     data_list, data_smiles_list = [], []
-        #     smiles_list, rdkit_mol_objs, labels = \
-        #         _load_pcba_dataset(self.raw_paths[0])
-        #     downstream_inchi = set(pd.read_csv(
-        #         os.path.join(self.root, 'downstream_mol_inchi_may_24_2019'),
-        #         sep=',', header=None)[0])
-        #     for i in range(len(smiles_list)):
-        #         # print(i)
-        #         if '.' not in smiles_list[i]:  # remove examples with
-        #             # multiples species
-        #             rdkit_mol = rdkit_mol_objs[i]
-        #             mw = Descriptors.MolWt(rdkit_mol)
-        #             if 50 <= mw <= 900:
-        #                 inchi = create_standardized_mol_id(smiles_list[i])
-        #                 if inchi is not None and inchi not in downstream_inchi:
-        #                     data = mol_to_graph_data_obj_simple(rdkit_mol)
-        #                     data.id = torch.tensor([i])
-        #                     data.y = torch.tensor(labels[i, :])
-        #                     data_list.append(data)
-        #                     data_smiles_list.append(smiles_list[i])
 
         elif self.dataset == 'sider':
             smiles_list, rdkit_mol_objs, labels = \

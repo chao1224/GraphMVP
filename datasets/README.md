@@ -20,6 +20,12 @@ mkdir -p GEOM/processed
     mv 4327252 rdkit_folder.tar.gz
     tar -xvf rdkit_folder.tar.gz
     ```
+    or do the following if you are using slurm system
+    ```
+    cp rdkit_folder.tar.gz $SLURM_TMPDIR
+    cd $SLURM_TMPDIR
+    tar -xvf rdkit_folder.tar.gz
+    ```
 + over 33m conformations
 + over 430k molecules
     + 304,466 species contain experimental data for the inhibition of various pathogens
