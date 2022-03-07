@@ -69,7 +69,7 @@ def mol_to_graph_data_obj_simple_3D(mol):
 
 def summarise():
     """ summarise the stats of molecules and conformers """
-    dir_name = '../datasets/GEOM/rdkit_folder'
+    dir_name = '{}/rdkit_folder'.format(data_folder)
     drugs_file = '{}/summary_drugs.json'.format(dir_name)
 
     with open(drugs_file, 'r') as f:
@@ -158,7 +158,7 @@ class Molecule3DDataset(InMemoryDataset):
         data_smiles_list = []
 
         if self.smiles_copy_from_3D_file is None:  # 3D datasets
-            dir_name = '../datasets/GEOM/rdkit_folder'
+            dir_name = '{}/rdkit_folder'.format(data_folder)
             drugs_file = '{}/summary_drugs.json'.format(dir_name)
             with open(drugs_file, 'r') as f:
                 drugs_summary = json.load(f)
@@ -242,7 +242,7 @@ class Molecule3DDataset(InMemoryDataset):
             data_smiles_list = list(dict.fromkeys(data_smiles_list))
 
             # load 3D structure
-            dir_name = '../datasets/GEOM/rdkit_folder'
+            dir_name = '{}/rdkit_folder'.format(data_folder)
             drugs_file = '{}/summary_drugs.json'.format(dir_name)
             with open(drugs_file, 'r') as f:
                 drugs_summary = json.load(f)
@@ -289,11 +289,6 @@ if __name__ == '__main__':
     random.seed(0)
     np.random.seed(0)
     torch.manual_seed(0)
-    # device = torch.device('cuda:' + str(args.device)) \
-    #     if torch.cuda.is_available() else torch.device('cpu')
-    # if torch.cuda.is_available():
-    #     torch.cuda.manual_seed_all(0)
-    #     torch.cuda.set_device(args.device)
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--sum', type=bool, default=False, help='cal dataset stats')
@@ -302,18 +297,37 @@ if __name__ == '__main__':
     parser.add_argument('--n_upper', type=int, help='upper bound for number of conformers')
     args = parser.parse_args()
 
+    # This is only for SLURM_TMPDIR
+    data_folder = os.environ['SLURM_TMPDIR']
+    print('data folder: {}'.format(data_folder))
+
     if args.sum:
         sum_list = summarise()
-        with open('../datasets/summarise.json', 'w') as fout:
+        with open('{}/summarise.json'.format(data_folder), 'w') as fout:
             json.dump(sum_list, fout)
 
     else:
         n_mol, n_conf, n_upper = args.n_mol, args.n_conf, args.n_upper
-        root_2d = '../datasets/GEOM_2D_nmol%d_nconf%d_nupper%d/' % (n_mol, n_conf, n_upper)
-        root_3d = '../datasets/GEOM_3D_nmol%d_nconf%d_nupper%d/' % (n_mol, n_conf, n_upper)
+        root_2d = '{}/GEOM_2D_nmol{}_nconf{}_nupper{}'.format(data_folder, n_mol, n_conf, n_upper)
+        root_3d = '{}/GEOM_3D_nmol{}_nconf{}_nupper{}'.format(data_folder, n_mol, n_conf, n_upper)
 
         # Generate 3D Datasets (2D SMILES + 3D Conformer)
         Molecule3DDataset(root=root_3d, n_mol=n_mol, n_conf=n_conf, n_upper=n_upper)
         # Generate 2D Datasets (2D SMILES)
         Molecule3DDataset(root=root_2d, n_mol=n_mol, n_conf=n_conf, n_upper=n_upper,
                           smiles_copy_from_3D_file='%s/processed/smiles.csv' % root_3d)
+    
+    ##### for data copy #####
+    '''
+    wget https://dataverse.harvard.edu/api/access/datafile/4327252
+    mv 4327252 rdkit_folder.tar.gz
+    cp rdkit_folder.tar.gz $SLURM_TMPDIR
+    cd $SLURM_TMPDIR
+    tar -xvf rdkit_folder.tar.gz
+    '''
+
+    ##### for data pre-processing #####
+    '''
+    python dataset_preparation.py --n_mol 100 --n_conf 5 --n_upper 1000
+    python dataset_preparation.py --n_mol 50000 --n_conf 5 --n_upper 1000
+    '''
