@@ -20,16 +20,6 @@ mkdir -p GEOM/processed
     mv 4327252 rdkit_folder.tar.gz
     tar -xvf rdkit_folder.tar.gz
     ```
-[comment]: <> (    ```bash)
-
-[comment]: <> (    wget https://dataverse.harvard.edu/api/access/datafile/4327191)
-
-[comment]: <> (    mv 4327191 qm9_featurized.msgpack.tar.gz)
-
-[comment]: <> (    tar -xzvf qm9_featurized.tar.gz)
-
-[comment]: <> (    ```)
-
 + over 33m conformations
 + over 430k molecules
     + 304,466 species contain experimental data for the inhibition of various pathogens
@@ -47,8 +37,8 @@ mv dataset molecule_datasets
 
 - delaney/esol (already included)
 - lipophilicity (already included)
-- malaria (Below)
-- cep (Below)
+- malaria
+- cep
 
 ```
 wget -O malaria-processed.csv https://raw.githubusercontent.com/HIPS/neural-fingerprint/master/data/2015-06-03-malaria/malaria-processed.csv
@@ -60,8 +50,7 @@ mkdir -p ./molecule_datasets/cep/raw
 mv cep-processed.csv ./molecule_datasets/cep/raw/cep.csv
 ```
 
-### For the complete version of featurization
-
+Then we copy them for the regression (more atom features).
 ```
 mkdir -p ./molecule_datasets_regression/esol
 cp -r ./molecule_datasets/esol/raw               ./molecule_datasets_regression/esol/
