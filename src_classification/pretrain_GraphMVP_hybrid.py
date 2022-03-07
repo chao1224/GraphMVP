@@ -10,7 +10,7 @@ from torch_geometric.data import DataLoader
 from torch_geometric.nn import global_mean_pool
 from models import GNN, SchNet, AutoEncoder, VariationalAutoEncoder, Discriminator
 from dataloader import DataLoaderAE, DataLoaderMasking, DataLoaderSubstructContext3D
-from util import dual_CL, NegativeEdge, MaskAtom, ExtractSubstructureContextPair, cycle, \
+from util import dual_CL, NegativeEdge, MaskAtom, ExtractSubstructureContextPair, \
     do_GraphCL, do_GraphCLv2, update_augmentation_probability_JOAO, update_augmentation_probability_JOAOv2
 
 from pretrain_EP import do_EdgePred

@@ -23,8 +23,7 @@ parser.add_argument('--lr', type=float, default=0.001)
 parser.add_argument('--lr_scale', type=float, default=1)
 parser.add_argument('--decay', type=float, default=0)
 # parser.add_argument('--split_path', type=str)  # used in chirality
-# parser.set_defaults(
-#     split_path='../datasets/chirality/d4_docking/rs/split0.npy')
+# parser.set_defaults(split_path='../datasets/chirality/d4_docking/rs/split0.npy')
 # about molecule GNN
 parser.add_argument('--gnn_type', type=str, default='gin')
 parser.add_argument('--num_layer', type=int, default=5)
@@ -48,8 +47,7 @@ parser.add_argument('--num_filters', type=int, default=128)
 parser.add_argument('--num_interactions', type=int, default=6)
 parser.add_argument('--num_gaussians', type=int, default=51)
 parser.add_argument('--cutoff', type=float, default=10)
-parser.add_argument('--readout', type=str, default='mean',
-                    choices=['mean', 'add'])
+parser.add_argument('--readout', type=str, default='mean', choices=['mean', 'add'])
 parser.add_argument('--schnet_lr_scale', type=float, default=1)
 
 # for 2D-3D Contrastive CL
@@ -60,6 +58,9 @@ parser.add_argument('--T', type=float, default=0.1)
 parser.add_argument('--normalize', dest='normalize', action='store_true')
 parser.add_argument('--no_normalize', dest='normalize', action='store_false')
 parser.add_argument('--SSL_masking_ratio', type=float, default=0)
+# This is for generative SSL.
+# AE is auto-encoding, or representation reconstruction (RR).
+# VAE is variational auto-encoding, or variational representation reconstruction (VRR).
 parser.add_argument('--AE_model', type=str, default='AE', choices=['AE', 'VAE'])
 parser.set_defaults(AE_model='AE')
 
@@ -73,8 +74,7 @@ parser.set_defaults(detach_target=True)
 parser.add_argument('--beta', type=float, default=1)
 
 # # for 2D-3D Variational AutoEncoder with Flow
-# parser.add_argument('--flow_model', type=str, default='planar',
-#                     choices=['planar', 'radial', 'mlp'])
+# parser.add_argument('--flow_model', type=str, default='planar', choices=['planar', 'radial', 'mlp'])
 # parser.add_argument('--flow_length', type=int, default=8)
 
 # # for Importance Weighted AutoEncoder
