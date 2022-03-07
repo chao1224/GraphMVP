@@ -59,9 +59,9 @@ for dataset in "${dataset_list[@]}"; do
 for SSL_masking_ratio in "${SSL_masking_ratio_list[@]}"; do
 
 for i in {0..1}; do
-
 SSL_2D_mode=${SSL_2D_mode_list[$i]}
 time=${time_list[$i]}
+
 for alpha_3 in "${alpha_3_list[@]}"; do
 
 for alpha_1 in "${alpha_1_list[@]}"; do
@@ -85,29 +85,27 @@ for dropout_ratio in "${dropout_ratio_list[@]}"; do
      export output_file=../output/"$folder"/pretraining.out
      export output_model_dir=../output/"$folder"/pretraining
 
-      if [[ ! -f "$output_model_dir"_model_final.pth ]]; then
-          # echo "$output_model_dir"_model_final.pth undone
-          # ls "$output_model_dir"*
-          # echo "$output_file"
-          ls ../output/"$folder"
-          # rm ../output/"$folder"/*
+     echo "$output_model_dir"_model_final.pth undone
+     ls "$output_model_dir"*
+     echo "$output_file"
+     ls ../output/"$folder"
+     rm ../output/"$folder"/*
 
 
-          # sbatch --gres=gpu:v100l:1 -c 8 --mem=32G -t "$time":00:00  --account=rrg-bengioy-ad --qos=high --job-name=CL_VAE_"$SSL_2D_mode"_"$time" \
-          # --output="$output_file" \
-          # ./run_pretrain_"$mode".sh \
-          # --epochs="$epochs" \
-          # --dataset="$dataset" \
-          # --batch_size=256 \
-          # --SSL_masking_ratio="$SSL_masking_ratio" \
-          # --CL_similarity_metric="$CL_similarity_metric" --T="$T" --"$normalize" \
-          # --AE_model="$AE_model" --AE_loss="$AE_loss" --"$detach" --beta="$beta" \
-          # --alpha_1="$alpha_1" --alpha_2="$alpha_2" \
-          # --SSL_2D_mode="$SSL_2D_mode" --alpha_3="$alpha_3" \
-          # --num_interactions="$num_interactions" --num_gaussians="$num_gaussians" --cutoff="$cutoff" --schnet_lr_scale="$schnet_lr_scale" \
-          # --dropout_ratio="$dropout_ratio" --num_workers=8 \
-          # --output_model_dir="$output_model_dir"
-     fi
+     sbatch --gres=gpu:v100l:1 -c 8 --mem=32G -t "$time":00:00  --account=rrg-bengioy-ad --qos=high --job-name=CL_VAE_"$SSL_2D_mode"_"$time" \
+     --output="$output_file" \
+     ./run_pretrain_"$mode".sh \
+     --epochs="$epochs" \
+     --dataset="$dataset" \
+     --batch_size=256 \
+     --SSL_masking_ratio="$SSL_masking_ratio" \
+     --CL_similarity_metric="$CL_similarity_metric" --T="$T" --"$normalize" \
+     --AE_model="$AE_model" --AE_loss="$AE_loss" --"$detach" --beta="$beta" \
+     --alpha_1="$alpha_1" --alpha_2="$alpha_2" \
+     --SSL_2D_mode="$SSL_2D_mode" --alpha_3="$alpha_3" \
+     --num_interactions="$num_interactions" --num_gaussians="$num_gaussians" --cutoff="$cutoff" --schnet_lr_scale="$schnet_lr_scale" \
+     --dropout_ratio="$dropout_ratio" --num_workers=8 \
+     --output_model_dir="$output_model_dir"
 
      echo
 
@@ -123,8 +121,6 @@ done
 done
 done
 done
-echo
-echo
 
 done
 done
