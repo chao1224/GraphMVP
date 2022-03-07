@@ -65,30 +65,11 @@ def train(args, molecule_model_2D, device, loader, optimizer):
         if args.model_3d == 'schnet':
             molecule_3D_repr = molecule_model_3D(batch.x[:, 0], batch.positions, batch.batch)
 
-        elif args.model_3d == 'se3':
-            x_one_hot = F.one_hot(batch.x[:, 0], num_classes=59).float()
-            x = torch.cat([x_one_hot, batch.x[:, 0].unsqueeze(1)], dim=1).float()
-            edge_attr_one_hot = F.one_hot(batch.edge_attr[:, 0], num_classes=4)
-            node_3D_repr = molecule_model_3D(
-                x=x,
-                positions=batch.positions,
-                edge_index=batch.edge_index,
-                edge_feat=edge_attr_one_hot,
-            )
-            molecule_3D_repr = global_mean_pool(node_3D_repr, batch.batch)
-            molecule_3D_repr = molecule_projection_layer(molecule_3D_repr)
-        
-        elif args.model_3d == 'spherenet':
-            molecule_3D_repr = molecule_model_3D(batch.x[:, 0], batch.positions, batch.batch)
 
         CL_loss, CL_acc = dual_CL(molecule_2D_repr, molecule_3D_repr, args)
-        if args.AE_model == 'Energy_VAE':
-            AE_loss_1, AE_acc_1 = AE_2D_3D_model(molecule_2D_repr, molecule_3D_repr)
-            AE_loss_2, AE_acc_2 = AE_3D_2D_model(molecule_3D_repr, molecule_2D_repr)
-        else:
-            AE_loss_1 = AE_2D_3D_model(molecule_2D_repr, molecule_3D_repr)
-            AE_loss_2 = AE_3D_2D_model(molecule_3D_repr, molecule_2D_repr)
-            AE_acc_1 = AE_acc_2 = 0
+        AE_loss_1 = AE_2D_3D_model(molecule_2D_repr, molecule_3D_repr)
+        AE_loss_2 = AE_3D_2D_model(molecule_3D_repr, molecule_2D_repr)
+        AE_acc_1 = AE_acc_2 = 0
         AE_loss = (AE_loss_1 + AE_loss_2) / 2
 
         CL_loss_accum += CL_loss.detach().cpu().item()
@@ -129,7 +110,6 @@ if __name__ == '__main__':
         torch.cuda.set_device(args.device)
 
     if 'GEOM' in args.dataset:
-        # /localscratch/liusheng.20677539.0
         data_root = '../datasets/{}/'.format(args.dataset) if args.input_data_dir == '' else '{}/{}/'.format(args.input_data_dir, args.dataset)
         dataset = Molecule3DMaskingDataset(data_root, dataset=args.dataset, mask_ratio=args.SSL_masking_ratio)
     else:

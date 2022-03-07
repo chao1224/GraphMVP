@@ -76,13 +76,10 @@ def train_no_aug(args, device, loader, optimizer):
 
         ##### To obtain 3D-2D SSL loss and acc
         CL_loss, CL_acc = dual_CL(molecule_2D_repr, molecule_3D_repr, args)
-        if args.AE_model == 'Energy_VAE':
-            AE_loss_1, AE_acc_1 = AE_2D_3D_model(molecule_2D_repr, molecule_3D_repr)
-            AE_loss_2, AE_acc_2 = AE_3D_2D_model(molecule_3D_repr, molecule_2D_repr)
-        else:
-            AE_loss_1 = AE_2D_3D_model(molecule_2D_repr, molecule_3D_repr)
-            AE_loss_2 = AE_3D_2D_model(molecule_3D_repr, molecule_2D_repr)
-            AE_acc_1 = AE_acc_2 = 0
+
+        AE_loss_1 = AE_2D_3D_model(molecule_2D_repr, molecule_3D_repr)
+        AE_loss_2 = AE_3D_2D_model(molecule_3D_repr, molecule_2D_repr)
+        AE_acc_1 = AE_acc_2 = 0
         AE_loss = (AE_loss_1 + AE_loss_2) / 2
 
         ##### To obtain 2D SSL loss and acc
@@ -180,13 +177,10 @@ def train_with_aug(args, device, loader, optimizer):
 
         ##### To obtain 3D-2D SSL loss and acc
         CL_loss, CL_acc = dual_CL(molecule_2D_repr, molecule_3D_repr, args)
-        if args.AE_model == 'Energy_VAE':
-            AE_loss_1, AE_acc_1 = AE_2D_3D_model(molecule_2D_repr, molecule_3D_repr)
-            AE_loss_2, AE_acc_2 = AE_3D_2D_model(molecule_3D_repr, molecule_2D_repr)
-        else:
-            AE_loss_1 = AE_2D_3D_model(molecule_2D_repr, molecule_3D_repr)
-            AE_loss_2 = AE_3D_2D_model(molecule_3D_repr, molecule_2D_repr)
-            AE_acc_1 = AE_acc_2 = 0
+
+        AE_loss_1 = AE_2D_3D_model(molecule_2D_repr, molecule_3D_repr)
+        AE_loss_2 = AE_3D_2D_model(molecule_3D_repr, molecule_2D_repr)
+        AE_acc_1 = AE_acc_2 = 0
         AE_loss = (AE_loss_1 + AE_loss_2) / 2
 
         ##### To obtain 2D SSL loss and acc
