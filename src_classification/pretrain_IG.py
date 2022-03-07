@@ -1,11 +1,3 @@
-""" GRAPH SSL Pre-Training via InfoMax
-i.e., maps nodes in similar structural contexts to closer embeddings
-Ref Paper: Sec. 5.2 and Appendix G of
-            https://arxiv.org/abs/1905.12265 ;
-           which is adapted from
-            https://arxiv.org/abs/1809.10341 ;
-Ref Code: ${GitHub_Repo}/chem/pretrain_deepgraphinfomax.py """
-
 import time
 import torch
 import numpy as np

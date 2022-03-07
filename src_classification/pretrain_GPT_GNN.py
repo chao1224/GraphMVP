@@ -1,9 +1,3 @@
-""" GPT-GNN pre-training
-Current version only supports the node reconstruction.
-Because the current GIN model only supports node representation.
-In the future, we will add edge reconstruction with new GNN model.
-"""
-
 import time
 import torch
 import numpy as np

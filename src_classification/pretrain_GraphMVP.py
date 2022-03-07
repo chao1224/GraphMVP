@@ -9,8 +9,7 @@ from config import args
 from util import dual_CL
 from torch_geometric.nn import global_mean_pool
 from torch_geometric.data import DataLoader
-from models import GNN, SchNet, SE3Transformer, SphereNet, AutoEncoder, VariationalAutoEncoder, \
-    NormalizingFlowVariationalAutoEncoder, ImportanceWeightedAutoEncoder, EnergyVariationalAutoEncoder
+from models import GNN, SchNet, AutoEncoder, VariationalAutoEncoder
 from tqdm import tqdm
 from datasets import Molecule3DMaskingDataset
 from torch_geometric.nn import global_mean_pool
@@ -147,57 +146,10 @@ if __name__ == '__main__':
         molecule_model_3D = SchNet(
             hidden_channels=args.emb_dim, num_filters=args.num_filters, num_interactions=args.num_interactions,
             num_gaussians=args.num_gaussians, cutoff=args.cutoff, atomref=None, readout=args.readout).to(device)
-
-    elif args.model_3d == 'se3':
-        atom_feature_size = 60
-        edge_class = 4
-        molecule_model_3D = SE3Transformer(
-            atom_feature_size=atom_feature_size,
-            edge_dim=edge_class,
-            num_layers=args.se3_transformer_num_layers,
-            num_channels=args.se3_transformer_num_channels,
-            num_degrees=args.se3_transformer_num_degrees,
-            num_nlayers=args.se3_transformer_num_nlayers,
-            div=args.se3_transformer_div,
-            n_heads=args.se3_transformer_n_heads,
-        ).to(device)
-        latent_dim = args.se3_transformer_num_channels * args.se3_transformer_num_degrees
-        molecule_projection_layer = nn.Sequential(
-            nn.Linear(latent_dim, args.emb_dim),
-        ).to(device)
-
-    elif args.model_3d == 'spherenet':
-        molecule_model_3D = SphereNet(
-            hidden_channels=128,
-            out_channels=args.emb_dim,
-            energy_and_force=False,
-            cutoff=args.spherenet_cutoff,
-            num_layers=args.spherenet_num_layers,
-            int_emb_size=args.spherenet_int_emb_size,
-            basis_emb_size_dist=args.spherenet_basis_emb_size_dist,
-            basis_emb_size_angle=args.spherenet_basis_emb_size_angle,
-            basis_emb_size_torsion=args.spherenet_basis_emb_size_torsion,
-            out_emb_channels=args.spherenet_out_emb_channels,
-            num_spherical=args.spherenet_num_spherical,
-            num_radial=args.spherenet_num_radial,
-            envelope_exponent=args.spherenet_envelope_exponent,
-            num_before_skip=args.spherenet_num_before_skip,
-            num_after_skip=args.spherenet_num_after_skip,
-            num_output_layers=args.spherenet_num_output_layers,
-        ).to(device)
-
-        print(molecule_model_3D)
-
     else:
         raise NotImplementedError('Model {} not included.'.format(args.model_3d))
 
-
-    if args.AE_model == 'Energy_VAE':
-        AE_2D_3D_model = EnergyVariationalAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta, args=args).to(device)
-        AE_3D_2D_model = EnergyVariationalAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta, args=args).to(device)
-    elif args.AE_model == 'AE':
+    if args.AE_model == 'AE':
         AE_2D_3D_model = AutoEncoder(
             emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target).to(device)
         AE_3D_2D_model = AutoEncoder(
@@ -207,27 +159,6 @@ if __name__ == '__main__':
             emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta).to(device)
         AE_3D_2D_model = VariationalAutoEncoder(
             emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta).to(device)
-    elif args.AE_model == 'IWAE':
-        AE_2D_3D_model = ImportanceWeightedAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta,
-            num_samples=args.iw_samples).to(device)
-        AE_3D_2D_model = ImportanceWeightedAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta,
-            num_samples=args.iw_samples).to(device)
-    elif args.AE_model == 'Flow_VAE':
-        AE_2D_3D_model = NormalizingFlowVariationalAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta,
-            flow_model=args.flow_model, flow_length=args.flow_length, kl_div_exact=False).to(device)
-        AE_3D_2D_model = NormalizingFlowVariationalAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta,
-            flow_model=args.flow_model, flow_length=args.flow_length, kl_div_exact=False).to(device)
-    elif args.AE_model == 'Flow_Exact_VAE':
-        AE_2D_3D_model = NormalizingFlowVariationalAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta,
-            flow_model=args.flow_model, flow_length=args.flow_length, kl_div_exact=True).to(device)
-        AE_3D_2D_model = NormalizingFlowVariationalAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target, beta=args.beta,
-            flow_model=args.flow_model, flow_length=args.flow_length, kl_div_exact=True).to(device)
     else:
         raise Exception
 

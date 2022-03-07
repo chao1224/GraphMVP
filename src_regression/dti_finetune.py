@@ -15,7 +15,6 @@ import torch.optim as optim
 
 import sys
 sys.path.insert(0, '../src_classification')
-from splitters import scaffold_split
 from util import rmse, mse, pearson, spearman, ci
 
 

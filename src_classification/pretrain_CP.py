@@ -1,9 +1,3 @@
-""" GRAPH SSL Pre-Training via Context Prediction
-i.e., maps nodes in similar structural contexts to closer embeddings
-Ref Paper: Sec. 3.1.1 and Appendix G of
-            https://arxiv.org/abs/1905.12265 ;
-Ref Code: ${GitHub_Repo}/chem/pretrain_contextpred.py """
-
 import time
 import torch
 import numpy as np

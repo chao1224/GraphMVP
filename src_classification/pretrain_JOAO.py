@@ -1,9 +1,4 @@
-# Ref: https://github.com/Shen-Lab/GraphCL_Automated/blob/master/ \
-#       transferLearning_MoleculeNet_PPI/chem/pretrain_JOAO.py
-# Ref: https://arxiv.org/abs/2106.07594 for GraphCL + JOAO
-#       JOAO -> joint augmentation optimization
 import time
-# import pdb
 import torch
 import argparse
 import numpy as np
@@ -14,8 +9,7 @@ from models import GNN
 from itertools import repeat
 from datasets import MoleculeDataset_graphcl
 from torch_geometric.nn import global_mean_pool
-from torch_geometric.data import Data, DataLoader
-from torch_geometric.utils import subgraph, to_networkx
+from torch_geometric.data import DataLoader
 
 
 class graphcl(nn.Module):
@@ -24,11 +18,6 @@ class graphcl(nn.Module):
         super(graphcl, self).__init__()
         self.gnn = gnn
         self.pool = global_mean_pool
-        # self.projection_head = nn.ModuleList(
-        #     [nn.Sequential(
-        #         nn.Linear(300, 300),
-        #         nn.ReLU(inplace=True),
-        #         nn.Linear(300, 300)) for _ in range(5)])
         self.projection_head = nn.Sequential(
             nn.Linear(300, 300),
             nn.ReLU(inplace=True),

@@ -1,6 +1,3 @@
-# Ref: https://arxiv.org/abs/2106.04113
-# Ref: https://github.com/DeepGraphLearning/GraphLoG
-
 import copy
 import torch
 import random

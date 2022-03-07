@@ -9,11 +9,9 @@ import sys
 sys.path.insert(0, '../src_classification')
 from config import args
 from os.path import join
-from util import get_num_task
 from torch_geometric.data import DataLoader
 from splitters import scaffold_split, random_split, random_scaffold_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from scipy.stats import pearsonr
 
 from datasets_complete_feature import MoleculeDatasetComplete
 from models_complete_feature import GNNComplete, GNN_graphpredComplete

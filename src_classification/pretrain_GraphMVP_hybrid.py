@@ -1,4 +1,3 @@
-# import os
 import time
 import torch
 import numpy as np
@@ -7,11 +6,9 @@ import torch.optim as optim
 
 from tqdm import tqdm
 from config import args
-# from itertools import repeat
 from torch_geometric.data import DataLoader
 from torch_geometric.nn import global_mean_pool
-from models import GNN, SchNet, AutoEncoder, \
-    VariationalAutoEncoder, EnergyVariationalAutoEncoder, Discriminator
+from models import GNN, SchNet, AutoEncoder, VariationalAutoEncoder, Discriminator
 from dataloader import DataLoaderAE, DataLoaderMasking, DataLoaderSubstructContext3D
 from util import dual_CL, NegativeEdge, MaskAtom, ExtractSubstructureContextPair, cycle, \
     do_GraphCL, do_GraphCLv2, update_augmentation_probability_JOAO, update_augmentation_probability_JOAOv2
@@ -315,14 +312,7 @@ if __name__ == '__main__':
         num_gaussians=args.num_gaussians, cutoff=args.cutoff, atomref=None, readout=args.readout).to(device)
 
     # set up VAE model
-    if args.AE_model == 'Energy_VAE':
-        AE_2D_3D_model = EnergyVariationalAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target,
-            beta=args.beta, args=args).to(device)
-        AE_3D_2D_model = EnergyVariationalAutoEncoder(
-            emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target,
-            beta=args.beta, args=args).to(device)
-    elif args.AE_model == 'AE':
+    if args.AE_model == 'AE':
         AE_2D_3D_model = AutoEncoder(
             emb_dim=args.emb_dim, loss=args.AE_loss, detach_target=args.detach_target).to(device)
         AE_3D_2D_model = AutoEncoder(

@@ -1,19 +1,13 @@
 import argparse
-
 from datasets import MoleculeDataset
+import numpy as np
 from torch_geometric.data import DataLoader
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 
-from tqdm import tqdm
-import numpy as np
-
 from models import GNN, GNN_graphpred
-from sklearn.metrics import roc_auc_score
-from torch_geometric.nn import global_mean_pool
 
 
 criterion = nn.BCEWithLogitsLoss(reduction = "none")

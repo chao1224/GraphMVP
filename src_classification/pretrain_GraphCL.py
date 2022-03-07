@@ -1,10 +1,7 @@
-# Ref: https://github.com/Shen-Lab/GraphCL/tree/master/transferLearning_MoleculeNet_PPI
-# Ref: https://arxiv.org/abs/2010.13902 for GraphCL
 import time
 import torch
 import argparse
 import numpy as np
-# import torch.nn as nn
 import torch.optim as optim
 
 from models import GNN

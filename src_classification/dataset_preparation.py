@@ -1,9 +1,5 @@
-#  Copyright (c) 2021. Shengchao & Hanchen
-#  liusheng@mila.quebec & hw501@cam.ac.uk
-
 import os
 import json
-# import pdb
 import torch
 import pickle
 import random

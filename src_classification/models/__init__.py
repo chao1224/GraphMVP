@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from .schnet import SchNet
-# from .infograph import Discriminator
+from .infograph import Discriminator
 from .molecule_gnn_model import GNN, GNN_graphpred
 from .auto_encoder import AutoEncoder, VariationalAutoEncoder
 

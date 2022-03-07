@@ -1,6 +1,3 @@
-#  Copyright (c) 2021. Shengchao and Hanchen.
-#  Emails: liusheng@mila.quebec, hw501@cam.ac.uk
-
 import torch
 import numpy as np
 import pandas as pd
@@ -8,8 +5,6 @@ import torch.nn as nn
 import torch.optim as optim
 
 from config import args
-from os.path import join
-from util import get_num_task
 from datasets import MoleculeMotifDataset, RDKIT_PROPS
 from models import GNN, GNN_graphpred
 from sklearn.metrics import roc_auc_score

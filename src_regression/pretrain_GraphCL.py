@@ -9,7 +9,6 @@ sys.path.insert(0, '../src_classification')
 
 from pretrain_JOAO import graphcl
 from torch_geometric.data import DataLoader
-from datasets import MoleculeDataset_graphcl
 
 from datasets_complete_feature import MoleculeDataset_graphcl_complete
 from models_complete_feature import GNNComplete

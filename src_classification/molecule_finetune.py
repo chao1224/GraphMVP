@@ -1,8 +1,3 @@
-#  Copyright (c) 2021. Shengchao and Hanchen.
-#  Emails: liusheng@mila.quebec, hw501@cam.ac.uk
-#  Ref: https://arxiv.org/abs/2012.00094
-#  Ref: https://github.com/PattanaikL/chiral_gnn
-
 import torch
 import numpy as np
 import pandas as pd

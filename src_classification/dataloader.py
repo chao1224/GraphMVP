@@ -1,7 +1,3 @@
-#  Copyright (c) 2021. Shengchao & Hanchen
-#  liusheng@mila.quebec & hw501@cam.ac.uk
-#  Ref: https://github.com/snap-stanford/pretrain-gnns/blob/master/bio/dataloader.py
-#  Ref: https://github.com/snap-stanford/pretrain-gnns/blob/master/chem/dataloader.py
 from torch.utils.data import DataLoader
 from batch import BatchSubstructContext, BatchMasking, BatchAE, BatchSubstructContext3D
 
