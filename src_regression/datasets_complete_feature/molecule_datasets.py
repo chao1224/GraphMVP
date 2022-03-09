@@ -196,11 +196,7 @@ class MoleculeDatasetComplete(InMemoryDataset):
 
     @property
     def raw_file_names(self):
-        if self.dataset == 'drugbank_dti':
-            file_name_list = [self.dataset]
-        elif self.dataset.startswith('stitch'):
-            file_name_list = [self.dataset]
-        elif self.dataset == 'davis':
+        if self.dataset == 'davis':
             file_name_list = ['davis']
         elif self.dataset == 'kiba':
             file_name_list = ['kiba']
@@ -248,130 +244,9 @@ class MoleculeDatasetComplete(InMemoryDataset):
 
             return data_list, data_smiles_list
 
-        if self.dataset == 'zinc_standard_agent':
-            data_list = []
-            data_smiles_list = []
-            input_path = self.raw_paths[0]
-            input_df = pd.read_csv(input_path, sep=',',
-                                   compression='gzip',
-                                   dtype='str')
-            zinc_id_list = list(input_df['zinc_id'])
-            smiles_list = list(input_df['smiles'])
-
-            for i in range(len(smiles_list)):
-                print(i)
-                s = smiles_list[i]
-                # each example contains a single species
-                try:
-                    rdkit_mol = AllChem.MolFromSmiles(s)
-                    if rdkit_mol is not None:  # ignore invalid mol objects
-                        # # convert aromatic bonds to double bonds
-                        # Chem.SanitizeMol(rdkit_mol,
-                        # sanitizeOps=Chem.SanitizeFlags.SANITIZE_KEKULIZE)
-                        data = mol_to_graph_data_obj_simple(rdkit_mol)
-                        # manually add mol id
-                        id = int(zinc_id_list[i].split('ZINC')[1].lstrip('0'))
-                        data.id = torch.tensor([id])
-                        # id here is zinc id value,
-                        # stripped of leading zeros
-                        data_list.append(data)
-                        data_smiles_list.append(smiles_list[i])
-                except:
-                    continue
-
-        elif self.dataset == 'chembl_filtered':
-            # get downstream test molecules.
-            from splitters import scaffold_split
-            data_list = []
-            data_smiles_list = []
-            downstream_dir = [
-                'dataset/bace',
-                'dataset/bbbp',
-                'dataset/clintox',
-                'dataset/esol',
-                'dataset/freesolv',
-                'dataset/hiv',
-                'dataset/lipophilicity',
-                'dataset/muv',
-                # 'dataset/pcba/processed/smiles.csv',
-                'dataset/sider',
-                'dataset/tox21',
-                'dataset/toxcast',
-            ]
-            downstream_inchi_set = set()
-            for d_path in downstream_dir:
-                print(d_path)
-                dataset_name = d_path.split('/')[1]
-                downstream_dataset = MoleculeDataset(d_path, dataset=dataset_name)
-                downstream_smiles = pd.read_csv(
-                    os.path.join(d_path, 'processed', 'smiles.csv'),
-                    header=None)[0].tolist()
-
-                assert len(downstream_dataset) == len(downstream_smiles)
-
-                _, _, _, (train_smiles, valid_smiles, test_smiles) = \
-                    scaffold_split(downstream_dataset,
-                                   downstream_smiles,
-                                   task_idx=None,
-                                   null_value=0,
-                                   frac_train=0.8,
-                                   frac_valid=0.1,
-                                   frac_test=0.1,
-                                   return_smiles=True)
-
-                # remove both test and validation molecules
-                remove_smiles = test_smiles + valid_smiles
-
-                downstream_inchis = []
-                for smiles in remove_smiles:
-                    species_list = smiles.split('.')
-                    for s in species_list:  # record inchi for all species, not just the
-                        # largest (by default in create_standardized_mol_id if input has
-                        # multiple species)
-                        inchi = create_standardized_mol_id(s)
-                        downstream_inchis.append(inchi)
-                downstream_inchi_set.update(downstream_inchis)
-
-            smiles_list, rdkit_mol_objs, folds, labels = \
-                _load_chembl_with_labels_dataset(os.path.join(self.root, 'raw'))
-
-            print('processing')
-            for i in range(len(rdkit_mol_objs)):
-                print(i)
-                rdkit_mol = rdkit_mol_objs[i]
-                if rdkit_mol is not None:
-                    # # convert aromatic bonds to double bonds
-                    # Chem.SanitizeMol(rdkit_mol, sanitizeOps=Chem.SanitizeFlags.SANITIZE_KEKULIZE)
-                    mw = Descriptors.MolWt(rdkit_mol)
-                    if 50 <= mw <= 900:
-                        inchi = create_standardized_mol_id(smiles_list[i])
-                        if inchi is not None and inchi not in downstream_inchi_set:
-                            data = mol_to_graph_data_obj_simple(rdkit_mol)
-                            # manually add mol id, which is index of
-                            # the mol in the dataset
-                            data.id = torch.tensor([i])
-                            data.y = torch.tensor(labels[i, :])
-                            # fold information
-                            if i in folds[0]:
-                                data.fold = torch.tensor([0])
-                            elif i in folds[1]:
-                                data.fold = torch.tensor([1])
-                            else:
-                                data.fold = torch.tensor([2])
-                            data_list.append(data)
-                            data_smiles_list.append(smiles_list[i])
-
-        elif self.dataset == 'tox21':
+        if self.dataset == 'tox21':
             smiles_list, rdkit_mol_objs, labels = \
                 _load_tox21_dataset(self.raw_paths[0])
-            # for i in range(len(smiles_list)):
-            #     print(i)
-            #     rdkit_mol = rdkit_mol_objs[i]
-            #     data = mol_to_graph_data_obj_simple(rdkit_mol)
-            #     data.id = torch.tensor([i])
-            #     data.y = torch.tensor(labels[i, :])
-            #     data_list.append(data)
-            #     data_smiles_list.append(smiles_list[i])
             data_list, data_smiles_list = shared_extractor(
                 smiles_list, rdkit_mol_objs, labels)
 
@@ -441,28 +316,6 @@ class MoleculeDatasetComplete(InMemoryDataset):
             data_list, data_smiles_list = shared_extractor(
                 smiles_list, rdkit_mol_objs, labels)
         
-        # elif self.dataset == 'pcba_pretrain':
-        #     data_list, data_smiles_list = [], []
-        #     smiles_list, rdkit_mol_objs, labels = \
-        #         _load_pcba_dataset(self.raw_paths[0])
-        #     downstream_inchi = set(pd.read_csv(
-        #         os.path.join(self.root, 'downstream_mol_inchi_may_24_2019'),
-        #         sep=',', header=None)[0])
-        #     for i in range(len(smiles_list)):
-        #         # print(i)
-        #         if '.' not in smiles_list[i]:  # remove examples with
-        #             # multiples species
-        #             rdkit_mol = rdkit_mol_objs[i]
-        #             mw = Descriptors.MolWt(rdkit_mol)
-        #             if 50 <= mw <= 900:
-        #                 inchi = create_standardized_mol_id(smiles_list[i])
-        #                 if inchi is not None and inchi not in downstream_inchi:
-        #                     data = mol_to_graph_data_obj_simple(rdkit_mol)
-        #                     data.id = torch.tensor([i])
-        #                     data.y = torch.tensor(labels[i, :])
-        #                     data_list.append(data)
-        #                     data_smiles_list.append(smiles_list[i])
-
         elif self.dataset == 'sider':
             smiles_list, rdkit_mol_objs, labels = \
                 _load_sider_dataset(self.raw_paths[0])
@@ -474,43 +327,6 @@ class MoleculeDatasetComplete(InMemoryDataset):
                 _load_toxcast_dataset(self.raw_paths[0])
             data_list, data_smiles_list = shared_extractor(
                 smiles_list, rdkit_mol_objs, labels)
-
-        elif self.dataset == 'ptc_mr':
-            input_path = self.raw_paths[0]
-            data_list, data_smiles_list = [], []
-            input_df = pd.read_csv(input_path, sep=',', header=None,
-                                   names=['id', 'label', 'smiles'])
-            smiles_list = input_df['smiles']
-            labels = input_df['label'].values
-            for i in range(len(smiles_list)):
-                # print(i)
-                s = smiles_list[i]
-                rdkit_mol = AllChem.MolFromSmiles(s)
-                if rdkit_mol is not None:
-                    data = mol_to_graph_data_obj_simple(rdkit_mol)
-                    data.id = torch.tensor([i])
-                    data.y = torch.tensor([labels[i]])
-                    data_list.append(data)
-                    data_smiles_list.append(smiles_list[i])
-
-        elif self.dataset == 'mutag':
-            data_list, data_smiles_list = [], []
-            smiles_path = os.path.join(self.root, 'raw', 'mutag_188_data.can')
-            # smiles_path = 'dataset/mutag/raw/mutag_188_data.can'
-            labels_path = os.path.join(self.root, 'raw', 'mutag_188_target.txt')
-            # labels_path = 'dataset/mutag/raw/mutag_188_target.txt'
-            smiles_list = pd.read_csv(smiles_path, sep=' ', header=None)[0]
-            labels = pd.read_csv(labels_path, header=None)[0].values
-            for i in range(len(smiles_list)):
-                # print(i)
-                s = smiles_list[i]
-                rdkit_mol = AllChem.MolFromSmiles(s)
-                if rdkit_mol is not None:
-                    data = mol_to_graph_data_obj_simple(rdkit_mol)
-                    data.id = torch.tensor([i])
-                    data.y = torch.tensor([labels[i]])
-                    data_list.append(data)
-                    data_smiles_list.append(smiles_list[i])
 
         elif self.dataset == 'geom':
             input_path = self.raw_paths[0]

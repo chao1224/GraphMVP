@@ -64,7 +64,7 @@ pip install torch-geometric==1.7.2
 
 ## Dataset Preprocessing
 
-For dataset preprocessing, please follow the instruction [here]](https://github.com/chao1224/GraphMVP/datasets).
+For dataset preprocessing, please follow the instruction [here](https://github.com/chao1224/GraphMVP/datasets).
 
 **Featurization**. We employ two sets of featurization methods on atoms.
 1. For classification tasks, in order to follow the main molecular graph SSL research line, we use the same atom featurization methods (consider the atom types and chirality). Details in [here](https://github.com/chao1224/GraphMVP/tree/master/src_classification/datasets/datasets_utils.py#L12).
