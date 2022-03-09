@@ -50,6 +50,7 @@ conda install -y -c pytorch pytorch=1.9.1
 conda install -y numpy networkx scikit-learn
 pip install ase
 pip install git+https://github.com/bp-kelley/descriptastorus
+pip install ogb
 export TORCH=1.9.0
 export CUDA=cu102  # cu102, cu110
 
@@ -64,11 +65,24 @@ pip install torch-geometric==1.7.2
 
 ## Dataset Preprocessing
 
-For dataset preprocessing, please follow the instruction [here](https://github.com/chao1224/GraphMVP/datasets).
+For dataset download, please follow the instruction [here](https://github.com/chao1224/GraphMVP/datasets).
+
+For data preprocessing (GEOM), please use the following commands:
+```
+cd src_classification
+python GEOM_dataset_preparation.py --n_mol 50000 --n_conf 5 --n_upper 1000 --data_folder $SLURM_TMPDIR
+cd ..
+
+cd src_regression
+python GEOM_dataset_preparation.py --n_mol 50000 --n_conf 5 --n_upper 1000 --data_folder $SLURM_TMPDIR
+cd ..
+
+mv $SLURM_TMPDIR/GEOM datasets
+```
 
 **Featurization**. We employ two sets of featurization methods on atoms.
-1. For classification tasks, in order to follow the main molecular graph SSL research line, we use the same atom featurization methods (consider the atom types and chirality). Details in [here](https://github.com/chao1224/GraphMVP/tree/master/src_classification/datasets/datasets_utils.py#L12).
-2. For regression tasks, results with the above two atom-level features are too bad. Thus, we consider more comprehensive features from OGB. Details in [here](https://github.com/chao1224/GraphMVP/tree/master/src_regression/datasets_complete_feature/molecule_datasets.py#L31).
+1. For classification tasks, in order to follow the main molecular graph SSL research line, we use the same atom featurization methods (consider the atom types and chirality).
+2. For regression tasks, results with the above two atom-level features are too bad. Thus, we consider more comprehensive features from OGB.
 
 ## Experiments
 

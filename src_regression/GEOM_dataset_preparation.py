@@ -13,7 +13,8 @@ from rdkit import Chem
 from torch_geometric.data import Data, InMemoryDataset
 from tqdm import tqdm
 
-from datasets import allowable_features
+from ogb.utils.features import atom_to_feature_vector, bond_to_feature_vector
+
 
 
 def mol_to_graph_data_obj_simple_3D(mol):
@@ -27,8 +28,7 @@ def mol_to_graph_data_obj_simple_3D(mol):
     # atoms, two features: atom type, chirality tag
     atom_features_list = []
     for atom in mol.GetAtoms():
-        atom_feature = [allowable_features['possible_atomic_num_list'].index(atom.GetAtomicNum())] + \
-                       [allowable_features['possible_chirality_list'].index(atom.GetChiralTag())]
+        atom_feature = atom_to_feature_vector(atom)
         atom_features_list.append(atom_feature)
     x = torch.tensor(np.array(atom_features_list), dtype=torch.long)
 
@@ -39,8 +39,8 @@ def mol_to_graph_data_obj_simple_3D(mol):
         for bond in mol.GetBonds():
             i = bond.GetBeginAtomIdx()
             j = bond.GetEndAtomIdx()
-            edge_feature = [allowable_features['possible_bonds'].index(bond.GetBondType())] + \
-                           [allowable_features['possible_bond_dirs'].index(bond.GetBondDir())]
+            edge_feature = bond_to_feature_vector(bond)
+
             edges_list.append((i, j))
             edge_features_list.append(edge_feature)
             edges_list.append((j, i))
@@ -297,11 +297,11 @@ if __name__ == '__main__':
     parser.add_argument('--n_mol', type=int, help='number of unique smiles/molecules')
     parser.add_argument('--n_conf', type=int, help='number of conformers of each molecule')
     parser.add_argument('--n_upper', type=int, help='upper bound for number of conformers')
+    parser.add_argument('--data_folder', type=str)
     args = parser.parse_args()
 
-    # This is only for SLURM_TMPDIR
-    data_folder = os.environ['SLURM_TMPDIR']
-    print('data folder: {}'.format(data_folder))
+    # This is only for 
+    data_folder = args.data_folder
 
     if args.sum:
         sum_list = summarise()
@@ -310,8 +310,8 @@ if __name__ == '__main__':
 
     else:
         n_mol, n_conf, n_upper = args.n_mol, args.n_conf, args.n_upper
-        root_2d = '{}/GEOM_2D_nmol{}_nconf{}_nupper{}'.format(data_folder, n_mol, n_conf, n_upper)
-        root_3d = '{}/GEOM_3D_nmol{}_nconf{}_nupper{}'.format(data_folder, n_mol, n_conf, n_upper)
+        root_2d = '{}/GEOM_2D_nmol{}_nconf{}_nupper{}_morefeat'.format(data_folder, n_mol, n_conf, n_upper)
+        root_3d = '{}/GEOM_3D_nmol{}_nconf{}_nupper{}_morefeat'.format(data_folder, n_mol, n_conf, n_upper)
 
         # Generate 3D Datasets (2D SMILES + 3D Conformer)
         Molecule3DDataset(root=root_3d, n_mol=n_mol, n_conf=n_conf, n_upper=n_upper)
@@ -319,7 +319,7 @@ if __name__ == '__main__':
         Molecule3DDataset(root=root_2d, n_mol=n_mol, n_conf=n_conf, n_upper=n_upper,
                           smiles_copy_from_3D_file='%s/processed/smiles.csv' % root_3d)
     
-    ##### for data copy #####
+    ##### to data copy to SLURM_TMPDIR under the `datasets` folder #####
     '''
     wget https://dataverse.harvard.edu/api/access/datafile/4327252
     mv 4327252 rdkit_folder.tar.gz
@@ -330,6 +330,6 @@ if __name__ == '__main__':
 
     ##### for data pre-processing #####
     '''
-    python dataset_preparation.py --n_mol 100 --n_conf 5 --n_upper 1000
-    python dataset_preparation.py --n_mol 50000 --n_conf 5 --n_upper 1000
+    python dataset_preparation.py --n_mol 100 --n_conf 5 --n_upper 1000 --data_folder $SLURM_TMPDIR
+    python dataset_preparation.py --n_mol 50000 --n_conf 5 --n_upper 1000 --data_folder $SLURM_TMPDIR
     '''
