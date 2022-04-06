@@ -7,7 +7,11 @@ Authors: Shengchao Liu, Hanchen Wang, Weiyang Liu, Joan Lasenby, Hongyu Guo, Jia
 [[Project Page](https://chao1224.github.io/GraphMVP)]
 [[Paper](https://openreview.net/forum?id=xQUe1pOKPam)]
 [[ArXiv](https://arxiv.org/abs/2110.07728)]
+[[Slides](https://drive.google.com/file/d/1-lDWtdgeEgTO009YVPzHK8f7yYbvQ1oY/view?usp=sharing)]
+[[Poster](https://drive.google.com/file/d/1L_XrlgfmCmycfGf47Dt6nnaKpZtiqiN-/view?usp=sharing)]
+<br>
 [[NeurIPS SSL Workshop 2021](https://arxiv.org/abs/2110.07728)]
+[[ICLR GTRL Workshop 2022 (Spotlight)](https://gt-rl.github.io/)]
 
 This repository provides the source code for the ICLR'22 paper **Pre-training Molecular Graph Representation with 3D Geometry**, with the following task:
 - During pre-training, we consider both the 2D topology and 3D geometry.
