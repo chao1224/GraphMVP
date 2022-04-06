@@ -1,4 +1,7 @@
+<<<<<<< HEAD
+=======
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 import os
 from itertools import repeat
 

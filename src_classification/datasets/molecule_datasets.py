@@ -1,7 +1,10 @@
+<<<<<<< HEAD
+=======
 #  Copyright (c) 2021. Shengchao and Hanchen.
 #  Emails: liusheng@mila.quebec, hw501@cam.ac.uk
 #  Ref: https://github.com/snap-stanford/pretrain-gnns/blob/master/chem/loader.py
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 import os
 import pickle
 from itertools import chain, repeat
@@ -17,9 +20,12 @@ from torch.utils import data
 from torch_geometric.data import (Data, InMemoryDataset, download_url,
                                   extract_zip)
 
+<<<<<<< HEAD
+=======
 # todo: more datasets can be included in GEOM pre-training
 # allowable node and edge features
 # used in data_preparation.py
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 allowable_features = {
     'possible_atomic_num_list':       list(range(1, 119)),
     'possible_formal_charge_list':    [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
@@ -130,11 +136,14 @@ def graph_data_obj_to_mol_simple(data_x, data_edge_index, data_edge_attr):
         new_bond = mol.GetBondBetweenAtoms(begin_idx, end_idx)
         new_bond.SetBondDir(bond_dir)
 
+<<<<<<< HEAD
+=======
     # Chem.SanitizeMol(mol) # fails for COC1=CC2=C(NC(=N2)[S@@](=O)CC2=NC=C(
     # C)C(OC)=C2C)C=C1, when aromatic bond is possible
     # when we do not have aromatic bonds
     # Chem.SanitizeMol(mol, sanitizeOps=Chem.SanitizeFlags.SANITIZE_KEKULIZE)
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
     return mol
 
 
@@ -212,6 +221,8 @@ def nx_to_graph_data_obj_simple(G):
     return data
 
 
+<<<<<<< HEAD
+=======
 # def get_gasteiger_partial_charges(mol, n_iter=12):
 #     """
 #     Calculates list of gasteiger partial charges for each atom in mol object.
@@ -228,6 +239,7 @@ def nx_to_graph_data_obj_simple(G):
 #     return partial_charges
 
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 def create_standardized_mol_id(smiles):
     """ smiles -> inchi """
 
@@ -237,8 +249,11 @@ def create_standardized_mol_id(smiles):
                                      isomericSmiles=False)
         mol = AllChem.MolFromSmiles(smiles)
         if mol is not None:
+<<<<<<< HEAD
+=======
             # to catch weird issue with O=C1O[al]2oc(=O)c3ccc(cn3)c3ccccc3c3cccc(c3)\
             # c3ccccc3c3cc(C(F)(F)F)c(cc3o2)-c2ccccc2-c2cccc(c2)-c2ccccc2-c2cccnc21
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
             if '.' in smiles:  # if multiple species, pick largest molecule
                 mol_species_list = split_rdkit_mol_obj(mol)
                 largest_mol = get_largest_mol(mol_species_list)
@@ -277,9 +292,13 @@ class MoleculeDataset(InMemoryDataset):
 
     @property
     def raw_file_names(self):
+<<<<<<< HEAD
+        if self.dataset.startswith('stitch'):
+=======
         if self.dataset == 'drugbank_dti':
             file_name_list = [self.dataset]
         elif self.dataset.startswith('stitch'):
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
             file_name_list = [self.dataset]
         elif self.dataset == 'davis':
             file_name_list = ['davis']
@@ -304,9 +323,12 @@ class MoleculeDataset(InMemoryDataset):
             for i in range(len(smiles_list)):
                 print(i)
                 rdkit_mol = rdkit_mol_objs[i]
+<<<<<<< HEAD
+=======
                 # # convert aromatic bonds to double bonds
                 # Chem.SanitizeMol(rdkit_mol,
                 # sanitizeOps=Chem.SanitizeFlags.SANITIZE_KEKULIZE)
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
                 data = mol_to_graph_data_obj_simple(rdkit_mol)
                 data.id = torch.tensor([i])
                 data.y = torch.tensor(labels[i, :])
@@ -445,6 +467,8 @@ class MoleculeDataset(InMemoryDataset):
         elif self.dataset == 'tox21':
             smiles_list, rdkit_mol_objs, labels = \
                 _load_tox21_dataset(self.raw_paths[0])
+<<<<<<< HEAD
+=======
             # for i in range(len(smiles_list)):
             #     print(i)
             #     rdkit_mol = rdkit_mol_objs[i]
@@ -453,6 +477,7 @@ class MoleculeDataset(InMemoryDataset):
             #     data.y = torch.tensor(labels[i, :])
             #     data_list.append(data)
             #     data_smiles_list.append(smiles_list[i])
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
             data_list, data_smiles_list = shared_extractor(
                 smiles_list, rdkit_mol_objs, labels)
 
@@ -1081,6 +1106,8 @@ def _load_toxcast_dataset(input_path):
 
 
 def _load_chembl_with_labels_dataset(root_path):
+<<<<<<< HEAD
+=======
     """
     Data from 'Large-scale comparison of MLs methods for drug target prediction on ChEMBL'
     :param root_path: folder that contains the reduced chembl dataset
@@ -1095,6 +1122,7 @@ def _load_chembl_with_labels_dataset(root_path):
     # into the dataPythonReduced directory
     # wget http://bioinf.jku.at/research/lsc/chembl20/dataPythonReduced/chembl20LSTM.pckl
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
     # 1. load folds and labels
     f = open(os.path.join(root_path, 'folds0.pckl'), 'rb')
     folds = pickle.load(f)
@@ -1197,6 +1225,8 @@ def get_largest_mol(mol_list):
     largest_mol_idx = num_atoms_list.index(max(num_atoms_list))
     return mol_list[largest_mol_idx]
 
+<<<<<<< HEAD
+=======
 
 def create_all_datasets():
 
@@ -1368,3 +1398,4 @@ task PCBA-938		pos_ratio: 2.84961	missing ratio: 85.77512
 task PCBA-995		pos_ratio: 1.06553	missing ratio: 85.04330
 39.42927080420495
 '''
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
