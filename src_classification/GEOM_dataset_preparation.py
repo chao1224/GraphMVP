@@ -159,6 +159,19 @@ class Molecule3DDataset(InMemoryDataset):
         data_list = []
         data_smiles_list = []
 
+<<<<<<< HEAD
+        downstream_task_list = ["tox21", "toxcast", "clintox", "bbbp", "sider", "muv", "hiv", "bace", "esol", "lipophilicity"]
+        whole_SMILES_set = set()
+        for task in downstream_task_list:
+            print("====== {} ======".format(task))
+            file_path = "../datasets/molecule_datasets/{}/processed/smiles.csv".format(task)
+            SMILES_list = load_SMILES_list(file_path)
+            temp_SMILES_set = set(SMILES_list)
+            whole_SMILES_set = whole_SMILES_set | temp_SMILES_set
+        print("len of downstream SMILES:", len(whole_SMILES_set))
+
+=======
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
         if self.smiles_copy_from_3D_file is None:  # 3D datasets
             dir_name = '{}/rdkit_folder'.format(data_folder)
             drugs_file = '{}/summary_drugs.json'.format(dir_name)
@@ -172,10 +185,17 @@ class Molecule3DDataset(InMemoryDataset):
             random.shuffle(drugs_summary)
             mol_idx, idx, notfound = 0, 0, 0
             for smiles, sub_dic in tqdm(drugs_summary):
+<<<<<<< HEAD
+                smiles = smiles.strip()
+                if smiles in whole_SMILES_set:
+                    continue
+                if sub_dic.get('pickle_path', '') == '':
+=======
                 ##### Path should match #####
                 # pdb.set_trace()
                 if sub_dic.get('pickle_path', '') == '':
                     # pdb.set_trace()
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
                     notfound += 1
                     continue
 
@@ -187,7 +207,10 @@ class Molecule3DDataset(InMemoryDataset):
                     ##### count should match #####
                     conf_n = len(conformer_list)
                     if conf_n < self.n_conf or conf_n > self.n_upper:
+<<<<<<< HEAD
+=======
                         # print(smiles, len(conformer_list))
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
                         notfound += 1
                         continue
 
@@ -207,16 +230,23 @@ class Molecule3DDataset(InMemoryDataset):
                     # check that they're all the same
                     same_confs = len(list(set(conf_list))) == 1
                     same_confs_raw = len(list(set(conf_list_raw))) == 1
+<<<<<<< HEAD
+                    if not same_confs:
+=======
                     # pdb.set_trace()
                     if not same_confs:
                         # print(list(set(conf_list)))
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
                         if same_confs_raw is True:
                             print("Interesting")
                         notfound += 1
                         continue
 
                     for conformer_dict in conformer_list[:self.n_conf]:
+<<<<<<< HEAD
+=======
                         # pdb.set_trace()
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
                         # select the first n_conf conformations
                         rdkit_mol = conformer_dict['rd_mol']
                         data = mol_to_graph_data_obj_simple_3D(rdkit_mol)
@@ -273,12 +303,20 @@ class Molecule3DDataset(InMemoryDataset):
 
         if self.pre_transform is not None:
             data_list = [self.pre_transform(data) for data in data_list]
+<<<<<<< HEAD
+    
+=======
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
         data_smiles_series = pd.Series(data_smiles_list)
         saver_path = join(self.processed_dir, 'smiles.csv')
         print('saving to {}'.format(saver_path))
         data_smiles_series.to_csv(saver_path, index=False, header=False)
+<<<<<<< HEAD
+    
+=======
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
         data, slices = self.collate(data_list)
         torch.save((data, slices), self.processed_paths[0])
         print("%d molecules do not meet the requirements" % notfound)
@@ -287,6 +325,17 @@ class Molecule3DDataset(InMemoryDataset):
         return
 
 
+<<<<<<< HEAD
+def load_SMILES_list(file_path):
+    SMILES_list = []
+    with open(file_path, 'rb') as f:
+        for line in tqdm(f.readlines()):
+            SMILES_list.append(line.strip().decode())
+    return SMILES_list
+
+
+=======
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 if __name__ == '__main__':
     random.seed(0)
     np.random.seed(0)
@@ -300,7 +349,10 @@ if __name__ == '__main__':
     parser.add_argument('--data_folder', type=str)
     args = parser.parse_args()
 
+<<<<<<< HEAD
+=======
     # This is only for 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
     data_folder = args.data_folder
 
     if args.sum:
@@ -330,6 +382,11 @@ if __name__ == '__main__':
 
     ##### for data pre-processing #####
     '''
+<<<<<<< HEAD
+    python GEOM_dataset_preparation.py --n_mol 100 --n_conf 5 --n_upper 1000 --data_folder $SLURM_TMPDIR
+    python GEOM_dataset_preparation.py --n_mol 50000 --n_conf 5 --n_upper 1000 --data_folder $SLURM_TMPDIR
+=======
     python dataset_preparation.py --n_mol 100 --n_conf 5 --n_upper 1000 --data_folder $SLURM_TMPDIR
     python dataset_preparation.py --n_mol 50000 --n_conf 5 --n_upper 1000 --data_folder $SLURM_TMPDIR
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
     '''

@@ -382,6 +382,8 @@ class MoleculeDatasetComplete(InMemoryDataset):
         return
 
 
+<<<<<<< HEAD
+=======
 # NB: only properly tested when dataset_1 is chembl_with_labels
 # and dataset_2 is pcba_pretrain
 def merge_dataset_objs(dataset_1, dataset_2):
@@ -554,6 +556,7 @@ class MoleculeFingerprintDataset(data.Dataset):
             return self.data_list[index]
 
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 def _load_tox21_dataset(input_path):
     input_df = pd.read_csv(input_path, sep=',')
     smiles_list = input_df['smiles']
@@ -642,9 +645,12 @@ def _load_clintox_dataset(input_path):
            preprocessed_rdkit_mol_objs_list, labels.values
 
 
+<<<<<<< HEAD
+=======
 # input_path = 'dataset/clintox/raw/clintox.csv'
 # smiles_list, rdkit_mol_objs_list, labels = _load_clintox_dataset(input_path)
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 def _load_esol_dataset(input_path):
     # NB: some examples have multiple species
     input_df = pd.read_csv(input_path, sep=',')
@@ -656,9 +662,12 @@ def _load_esol_dataset(input_path):
     return smiles_list, rdkit_mol_objs_list, labels.values
 
 
+<<<<<<< HEAD
+=======
 # input_path = 'dataset/esol/raw/delaney-processed.csv'
 # smiles_list, rdkit_mol_objs_list, labels = _load_esol_dataset(input_path)
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 def _load_freesolv_dataset(input_path):
 
     input_df = pd.read_csv(input_path, sep=',')
@@ -721,6 +730,8 @@ def _load_muv_dataset(input_path):
     return smiles_list, rdkit_mol_objs_list, labels.values
 
 
+<<<<<<< HEAD
+=======
 def check_columns(df, tasks, N):
     bad_tasks = []
     total_missing_count = 0
@@ -801,6 +812,7 @@ def _load_pcba_dataset(input_path):
     return smiles_list, rdkit_mol_objs_list, labels
 
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 def _load_sider_dataset(input_path):
 
     input_df = pd.read_csv(input_path, sep=',')
@@ -857,6 +869,8 @@ def _load_toxcast_dataset(input_path):
            preprocessed_rdkit_mol_objs_list, labels.values
 
 
+<<<<<<< HEAD
+=======
 def _load_chembl_with_labels_dataset(root_path):
     """
     Data from 'Large-scale comparison of MLs methods for drug target prediction on ChEMBL'
@@ -938,6 +952,7 @@ def _load_chembl_with_labels_dataset(root_path):
     return smiles_list, preprocessed_rdkitArr, folds, denseOutputData
 
 
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 # root_path = 'dataset/chembl_with_labels'
 def check_smiles_validity(smiles):
     try:
@@ -973,6 +988,8 @@ def get_largest_mol(mol_list):
     num_atoms_list = [len(m.GetAtoms()) for m in mol_list]
     largest_mol_idx = num_atoms_list.index(max(num_atoms_list))
     return mol_list[largest_mol_idx]
+<<<<<<< HEAD
+=======
 
 
 def create_all_datasets():
@@ -1145,3 +1162,4 @@ task PCBA-938		pos_ratio: 2.84961	missing ratio: 85.77512
 task PCBA-995		pos_ratio: 1.06553	missing ratio: 85.04330
 39.42927080420495
 '''
+>>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
