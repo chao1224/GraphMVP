@@ -156,11 +156,7 @@ if __name__ == "__main__":
 
     # set up dataset
     if 'GEOM' in args.dataset:
-        dataset = MoleculeDataset_graphcl('../datasets/{}/'.format(args.dataset),
-                                          dataset=args.dataset)
-    else:
-        dataset = MoleculeDataset_graphcl('../datasets/molecule_datasets/' + args.dataset,
-                                          dataset=args.dataset)
+        dataset = MoleculeDataset_graphcl('../datasets/{}/'.format(args.dataset), dataset=args.dataset)
     dataset.set_augMode(args.aug_mode)
     dataset.set_augStrength(args.aug_strength)
     print(dataset)

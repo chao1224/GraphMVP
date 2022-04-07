@@ -34,8 +34,6 @@ class AutoEncoder(torch.nn.Module):
             nn.ReLU(),
             nn.Linear(self.emb_dim, self.emb_dim),
         )
-        # why not have BN as last FC layer:
-        # https://stats.stackexchange.com/questions/361700/
         return
 
     def forward(self, x, y):

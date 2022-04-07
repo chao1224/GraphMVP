@@ -132,10 +132,7 @@ if __name__ == '__main__':
 
     # Bunch of classification tasks
     num_tasks = get_num_task(args.dataset)
-    if 'GEOM' in args.dataset:
-        dataset_folder = '../datasets/'
-    else:
-        dataset_folder = '../datasets/molecule_datasets/'
+    dataset_folder = '../datasets/molecule_datasets/'
     dataset = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset)
     print(dataset)
 

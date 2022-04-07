@@ -77,14 +77,8 @@ if __name__ == '__main__':
         torch.cuda.manual_seed_all(0)
         torch.cuda.set_device(args.device)
 
-    # if args.dataset in ['GEOM', 'GEOM_3D_01', 'GEOM_3D_02', 'GEOM_01_2D',
-    #                     'GEOM_01_2D_New', 'GEOM_02_2D_New', 'GEOM_2D_nmol1000000_nconf5']:
     if 'GEOM' in args.dataset:
-        dataset = MoleculeDataset(
-            '../datasets/{}/'.format(args.dataset), dataset=args.dataset)
-    else:
-        dataset = MoleculeDataset(
-            '../datasets/molecule_datasets/' + args.dataset, dataset=args.dataset)
+        dataset = MoleculeDataset('../datasets/{}/'.format(args.dataset), dataset=args.dataset)
     loader = DataLoader(dataset, batch_size=args.batch_size,
                         shuffle=True, num_workers=args.num_workers)
 

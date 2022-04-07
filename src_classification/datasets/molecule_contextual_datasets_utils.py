@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-=======
-"""
-The contextual property.
-"""
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 import pickle
 from collections import Counter
 from multiprocessing import Pool
@@ -113,8 +107,6 @@ class TorchVocab(object):
             return False
         if self.itos != other.itos:
             return False
-        # if self.vectors != other.vectors:
-        #    return False
         return True
 
     def __len__(self):

@@ -33,33 +33,6 @@ def train(loader, model, optimizer, device):
 
         train_loss_accum += float(loss.detach().cpu().item())
 
-    # GraphCL
-    # aug_prob = loader.dataset.aug_prob
-    # loss_aug = np.zeros(25)
-    # for n in range(25):
-    #     _aug_prob = np.zeros(25)
-    #     _aug_prob[n] = 1
-    #     loader.dataset.set_augProb(_aug_prob)
-    #     # for efficiency, we only use around 10% of data to estimate the loss
-    #     count, count_stop = 0, len(loader.dataset) // (loader.batch_size * 10) + 1
-    #
-    #     with torch.no_grad():
-    #         for step, (_, batch1, batch2) in enumerate(loader):
-    #             # _, batch1, batch2 = batch
-    #             batch1 = batch1.to(device)
-    #             batch2 = batch2.to(device)
-    #
-    #             x1 = model.forward_cl(batch1.x, batch1.edge_index,
-    #                                   batch1.edge_attr, batch1.batch)
-    #             x2 = model.forward_cl(batch2.x, batch2.edge_index,
-    #                                   batch2.edge_attr, batch2.batch)
-    #             loss = model.loss_cl(x1, x2)
-    #             loss_aug[n] += loss.item()
-    #             count += 1
-    #             if count == count_stop:
-    #                 break
-    #     loss_aug[n] /= count
-
     return train_loss_accum / (step + 1)
 
 
@@ -100,9 +73,6 @@ if __name__ == "__main__":
     # set up dataset
     if 'GEOM' in args.dataset:
         dataset = MoleculeDataset_graphcl('../datasets/{}/'.format(args.dataset),
-                                          dataset=args.dataset)
-    else:
-        dataset = MoleculeDataset_graphcl('../datasets/molecule_datasets/' + args.dataset,
                                           dataset=args.dataset)
     dataset.set_augMode(args.aug_mode)
     dataset.set_augStrength(args.aug_strength)

@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-=======
-#  Copyright (c) 2021. Shengchao and Hanchen.
-#  Emails: liusheng@mila.quebec, hw501@cam.ac.uk
-#  Ref: https://github.com/snap-stanford/pretrain-gnns/blob/master/chem/loader.py
-
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 import os
 import pickle
 from itertools import chain, repeat
@@ -20,12 +13,6 @@ from torch.utils import data
 from torch_geometric.data import (Data, InMemoryDataset, download_url,
                                   extract_zip)
 
-<<<<<<< HEAD
-=======
-# todo: more datasets can be included in GEOM pre-training
-# allowable node and edge features
-# used in data_preparation.py
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 allowable_features = {
     'possible_atomic_num_list':       list(range(1, 119)),
     'possible_formal_charge_list':    [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
@@ -136,14 +123,6 @@ def graph_data_obj_to_mol_simple(data_x, data_edge_index, data_edge_attr):
         new_bond = mol.GetBondBetweenAtoms(begin_idx, end_idx)
         new_bond.SetBondDir(bond_dir)
 
-<<<<<<< HEAD
-=======
-    # Chem.SanitizeMol(mol) # fails for COC1=CC2=C(NC(=N2)[S@@](=O)CC2=NC=C(
-    # C)C(OC)=C2C)C=C1, when aromatic bond is possible
-    # when we do not have aromatic bonds
-    # Chem.SanitizeMol(mol, sanitizeOps=Chem.SanitizeFlags.SANITIZE_KEKULIZE)
-
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
     return mol
 
 
@@ -221,25 +200,6 @@ def nx_to_graph_data_obj_simple(G):
     return data
 
 
-<<<<<<< HEAD
-=======
-# def get_gasteiger_partial_charges(mol, n_iter=12):
-#     """
-#     Calculates list of gasteiger partial charges for each atom in mol object.
-#     :param mol: rdkit mol object
-#     :param n_iter: number of iterations Default 12
-#     :return: list of computed partial charges for each atom. """
-#
-#     # Chem.rdPartialCharges.ComputeGasteigerCharges(
-#     #     mol, nIter=n_iter, throwOnParamFailure=True)
-#     Chem.rdPartialCharges(
-#         mol, nIter=n_iter, throwOnParamFailure=True)
-#     partial_charges = [float(a.GetProp('_GasteigerCharge'))
-#                        for a in mol.GetAtoms()]
-#     return partial_charges
-
-
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 def create_standardized_mol_id(smiles):
     """ smiles -> inchi """
 
@@ -249,11 +209,6 @@ def create_standardized_mol_id(smiles):
                                      isomericSmiles=False)
         mol = AllChem.MolFromSmiles(smiles)
         if mol is not None:
-<<<<<<< HEAD
-=======
-            # to catch weird issue with O=C1O[al]2oc(=O)c3ccc(cn3)c3ccccc3c3cccc(c3)\
-            # c3ccccc3c3cc(C(F)(F)F)c(cc3o2)-c2ccccc2-c2cccc(c2)-c2ccccc2-c2cccnc21
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
             if '.' in smiles:  # if multiple species, pick largest molecule
                 mol_species_list = split_rdkit_mol_obj(mol)
                 largest_mol = get_largest_mol(mol_species_list)
@@ -264,7 +219,6 @@ def create_standardized_mol_id(smiles):
     return
 
 
-#todo: prune
 class MoleculeDataset(InMemoryDataset):
     def __init__(self, root, dataset='zinc250k', transform=None,
                  pre_transform=None, pre_filter=None, empty=False):
@@ -292,15 +246,7 @@ class MoleculeDataset(InMemoryDataset):
 
     @property
     def raw_file_names(self):
-<<<<<<< HEAD
-        if self.dataset.startswith('stitch'):
-=======
-        if self.dataset == 'drugbank_dti':
-            file_name_list = [self.dataset]
-        elif self.dataset.startswith('stitch'):
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
-            file_name_list = [self.dataset]
-        elif self.dataset == 'davis':
+        if self.dataset == 'davis':
             file_name_list = ['davis']
         elif self.dataset == 'kiba':
             file_name_list = ['kiba']
@@ -323,12 +269,6 @@ class MoleculeDataset(InMemoryDataset):
             for i in range(len(smiles_list)):
                 print(i)
                 rdkit_mol = rdkit_mol_objs[i]
-<<<<<<< HEAD
-=======
-                # # convert aromatic bonds to double bonds
-                # Chem.SanitizeMol(rdkit_mol,
-                # sanitizeOps=Chem.SanitizeFlags.SANITIZE_KEKULIZE)
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
                 data = mol_to_graph_data_obj_simple(rdkit_mol)
                 data.id = torch.tensor([i])
                 data.y = torch.tensor(labels[i, :])
@@ -396,7 +336,6 @@ class MoleculeDataset(InMemoryDataset):
                 'dataset/hiv',
                 'dataset/lipophilicity',
                 'dataset/muv',
-                # 'dataset/pcba/processed/smiles.csv',
                 'dataset/sider',
                 'dataset/tox21',
                 'dataset/toxcast',
@@ -467,17 +406,6 @@ class MoleculeDataset(InMemoryDataset):
         elif self.dataset == 'tox21':
             smiles_list, rdkit_mol_objs, labels = \
                 _load_tox21_dataset(self.raw_paths[0])
-<<<<<<< HEAD
-=======
-            # for i in range(len(smiles_list)):
-            #     print(i)
-            #     rdkit_mol = rdkit_mol_objs[i]
-            #     data = mol_to_graph_data_obj_simple(rdkit_mol)
-            #     data.id = torch.tensor([i])
-            #     data.y = torch.tensor(labels[i, :])
-            #     data_list.append(data)
-            #     data_smiles_list.append(smiles_list[i])
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
             data_list, data_smiles_list = shared_extractor(
                 smiles_list, rdkit_mol_objs, labels)
 
@@ -558,57 +486,6 @@ class MoleculeDataset(InMemoryDataset):
                 _load_toxcast_dataset(self.raw_paths[0])
             data_list, data_smiles_list = shared_extractor(
                 smiles_list, rdkit_mol_objs, labels)
-
-        elif self.dataset == 'ptc_mr':
-            input_path = self.raw_paths[0]
-            data_list, data_smiles_list = [], []
-            input_df = pd.read_csv(input_path, sep=',', header=None,
-                                   names=['id', 'label', 'smiles'])
-            smiles_list = input_df['smiles']
-            labels = input_df['label'].values
-            for i in range(len(smiles_list)):
-                # print(i)
-                s = smiles_list[i]
-                rdkit_mol = AllChem.MolFromSmiles(s)
-                if rdkit_mol is not None:
-                    data = mol_to_graph_data_obj_simple(rdkit_mol)
-                    data.id = torch.tensor([i])
-                    data.y = torch.tensor([labels[i]])
-                    data_list.append(data)
-                    data_smiles_list.append(smiles_list[i])
-
-        elif self.dataset == 'mutag':
-            data_list, data_smiles_list = [], []
-            smiles_path = os.path.join(self.root, 'raw', 'mutag_188_data.can')
-            # smiles_path = 'dataset/mutag/raw/mutag_188_data.can'
-            labels_path = os.path.join(self.root, 'raw', 'mutag_188_target.txt')
-            # labels_path = 'dataset/mutag/raw/mutag_188_target.txt'
-            smiles_list = pd.read_csv(smiles_path, sep=' ', header=None)[0]
-            labels = pd.read_csv(labels_path, header=None)[0].values
-            for i in range(len(smiles_list)):
-                # print(i)
-                s = smiles_list[i]
-                rdkit_mol = AllChem.MolFromSmiles(s)
-                if rdkit_mol is not None:
-                    data = mol_to_graph_data_obj_simple(rdkit_mol)
-                    data.id = torch.tensor([i])
-                    data.y = torch.tensor([labels[i]])
-                    data_list.append(data)
-                    data_smiles_list.append(smiles_list[i])
-
-        elif self.dataset == 'geom':
-            input_path = self.raw_paths[0]
-            data_list, data_smiles_list = [], []
-            input_df = pd.read_csv(input_path, sep=',', dtype='str')
-            smiles_list = list(input_df['smiles'])
-            for i in range(len(smiles_list)):
-                s = smiles_list[i]
-                rdkit_mol = AllChem.MolFromSmiles(s)
-                if rdkit_mol is not None:
-                    data = mol_to_graph_data_obj_simple(rdkit_mol)
-                    data.id = torch.tensor([i])
-                    data_list.append(data)
-                    data_smiles_list.append(s)
 
         else:
             raise ValueError('Dataset {} not included.'.format(self.dataset))
@@ -1106,23 +983,6 @@ def _load_toxcast_dataset(input_path):
 
 
 def _load_chembl_with_labels_dataset(root_path):
-<<<<<<< HEAD
-=======
-    """
-    Data from 'Large-scale comparison of MLs methods for drug target prediction on ChEMBL'
-    :param root_path: folder that contains the reduced chembl dataset
-    :return: list of smiles, preprocessed rdkit mol obj list, list of np.array
-    containing indices for each of the 3 folds, np.array containing the labels
-    """
-    # adapted from https://github.com/ml-jku/lsc/blob/master/pythonCode/lstm/loadData.py
-    # first need to download the files and unzip:
-    # wget http://bioinf.jku.at/research/lsc/chembl20/dataPythonReduced.zip
-    # unzip and rename to chembl_with_labels
-    # wget http://bioinf.jku.at/research/lsc/chembl20/dataPythonReduced/chembl20Smiles.pckl
-    # into the dataPythonReduced directory
-    # wget http://bioinf.jku.at/research/lsc/chembl20/dataPythonReduced/chembl20LSTM.pckl
-
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
     # 1. load folds and labels
     f = open(os.path.join(root_path, 'folds0.pckl'), 'rb')
     folds = pickle.load(f)
@@ -1225,177 +1085,3 @@ def get_largest_mol(mol_list):
     largest_mol_idx = num_atoms_list.index(max(num_atoms_list))
     return mol_list[largest_mol_idx]
 
-<<<<<<< HEAD
-=======
-
-def create_all_datasets():
-
-    downstream_dir = [
-        # 'bace',
-        # 'bbbp',
-        # 'clintox',
-        # 'esol',
-        # 'freesolv',
-        # 'hiv',
-        # 'lipophilicity',
-        # 'muv',
-        # 'sider',
-        # 'tox21',
-        # 'toxcast',
-        'pcba',
-    ]
-
-    for dataset_name in downstream_dir:
-        print(dataset_name)
-        root = "../../datasets/molecule_datasets/" + dataset_name
-        print('root\t', root)
-        os.makedirs(root + "/processed", exist_ok=True)
-        dataset = MoleculeDataset(root, dataset=dataset_name)
-        print(dataset)
-
-    # dataset = MoleculeDataset(root="dataset/chembl_filtered",
-    #                           dataset="chembl_filtered")
-    # print(dataset)
-    # dataset = MoleculeDataset(root="dataset/zinc_standard_agent",
-    #                           dataset="zinc_standard_agent")
-    # print(dataset)
-
-
-# test MoleculeDataset object
-if __name__ == "__main__":
-    create_all_datasets()
-    # extract PCBA from https://github.com/deepchem/deepchem/blob/master/datasets/pcba.csv.gz
-    # _load_pcba_dataset('../../datasets/molecule_datasets/pcba/raw/pcba.csv.gz')
-
-'''
-task PCBA-1030		pos_ratio: 9.88062	missing ratio: 63.20854
-task PCBA-1379		pos_ratio: 0.28422	missing ratio: 54.96621
-task PCBA-1452		pos_ratio: 0.11968	missing ratio: 65.99737
-task PCBA-1454		pos_ratio: 0.42874	missing ratio: 71.47203
-task PCBA-1457		pos_ratio: 0.35595	missing ratio: 53.88678
-task PCBA-1458		pos_ratio: 2.96564	missing ratio: 55.41498
-task PCBA-1460		pos_ratio: 2.53771	missing ratio: 48.97184
-task PCBA-1461		pos_ratio: 1.10730	missing ratio: 52.63434
-task PCBA-1468		pos_ratio: 0.41446	missing ratio: 42.62395
-task PCBA-1469		pos_ratio: 0.06284	missing ratio: 37.41142
-task PCBA-1471		pos_ratio: 0.13301	missing ratio: 50.26224
-task PCBA-1479		pos_ratio: 0.29088	missing ratio: 37.94363
-task PCBA-1631		pos_ratio: 0.34316	missing ratio: 40.90569
-task PCBA-1634		pos_ratio: 0.05875	missing ratio: 40.40349
-task PCBA-1688		pos_ratio: 1.16394	missing ratio: 53.55236
-task PCBA-1721		pos_ratio: 0.37387	missing ratio: 33.90215
-task PCBA-2100		pos_ratio: 0.39686	missing ratio: 33.37676
-task PCBA-2101		pos_ratio: 0.09378	missing ratio: 29.45190
-task PCBA-2147		pos_ratio: 1.82161	missing ratio: 56.25638
-task PCBA-2242		pos_ratio: 0.38838	missing ratio: 58.14651
-task PCBA-2326		pos_ratio: 0.40984	missing ratio: 40.64629
-task PCBA-2451		pos_ratio: 0.73574	missing ratio: 37.45871
-task PCBA-2517		pos_ratio: 0.34169	missing ratio: 23.68374
-task PCBA-2528		pos_ratio: 0.19193	missing ratio: 21.23093
-task PCBA-2546		pos_ratio: 3.79670	missing ratio: 36.66573
-task PCBA-2549		pos_ratio: 0.52730	missing ratio: 47.31382
-task PCBA-2551		pos_ratio: 6.16759	missing ratio: 38.49744
-task PCBA-2662		pos_ratio: 0.03855	missing ratio: 35.12344
-task PCBA-2675		pos_ratio: 0.03977	missing ratio: 43.41329
-task PCBA-2676		pos_ratio: 0.30185	missing ratio: 18.50758
-task PCBA-411		pos_ratio: 2.21310	missing ratio: 83.94386
-task PCBA-463254		pos_ratio: 0.01245	missing ratio: 25.15533
-task PCBA-485281		pos_ratio: 0.08101	missing ratio: 28.43454
-task PCBA-485290		pos_ratio: 0.28100	missing ratio: 22.89736
-task PCBA-485294		pos_ratio: 0.04774	missing ratio: 29.52465
-task PCBA-485297		pos_ratio: 2.94172	missing ratio: 29.42553
-task PCBA-485313		pos_ratio: 2.42935	missing ratio: 29.12111
-task PCBA-485314		pos_ratio: 1.41913	missing ratio: 27.87823
-task PCBA-485341		pos_ratio: 0.52804	missing ratio: 25.55955
-task PCBA-485349		pos_ratio: 0.19339	missing ratio: 27.23121
-task PCBA-485353		pos_ratio: 0.18665	missing ratio: 26.55304
-task PCBA-485360		pos_ratio: 0.68194	missing ratio: 50.32703
-task PCBA-485364		pos_ratio: 3.12950	missing ratio: 22.19691
-task PCBA-485367		pos_ratio: 0.17077	missing ratio: 25.84941
-task PCBA-492947		pos_ratio: 0.02429	missing ratio: 25.11691
-task PCBA-493208		pos_ratio: 0.82140	missing ratio: 90.53433
-task PCBA-504327		pos_ratio: 0.20893	missing ratio: 15.45368
-task PCBA-504332		pos_ratio: 10.31124	missing ratio: 32.34530
-task PCBA-504333		pos_ratio: 4.81269	missing ratio: 25.88783
-task PCBA-504339		pos_ratio: 4.74540	missing ratio: 19.11186
-task PCBA-504444		pos_ratio: 2.55289	missing ratio: 33.86895
-task PCBA-504466		pos_ratio: 1.34180	missing ratio: 29.31322
-task PCBA-504467		pos_ratio: 3.14422	missing ratio: 44.69369
-task PCBA-504706		pos_ratio: 0.06639	missing ratio: 31.16993
-task PCBA-504842		pos_ratio: 0.03110	missing ratio: 26.17633
-task PCBA-504845		pos_ratio: 0.03059	missing ratio: 15.26839
-task PCBA-504847		pos_ratio: 0.93284	missing ratio: 13.28800
-task PCBA-504891		pos_ratio: 0.00941	missing ratio: 17.83169
-task PCBA-540276		pos_ratio: 2.24105	missing ratio: 53.22362
-task PCBA-540317		pos_ratio: 0.57715	missing ratio: 15.86085
-task PCBA-588342		pos_ratio: 7.66499	missing ratio: 25.66913
-task PCBA-588453		pos_ratio: 1.06236	missing ratio: 15.34182
-task PCBA-588456		pos_ratio: 0.01322	missing ratio: 12.31793
-task PCBA-588579		pos_ratio: 0.51543	missing ratio: 11.21099
-task PCBA-588590		pos_ratio: 1.10797	missing ratio: 18.51940
-task PCBA-588591		pos_ratio: 1.26011	missing ratio: 14.73550
-task PCBA-588795		pos_ratio: 0.34784	missing ratio: 13.85818
-task PCBA-588855		pos_ratio: 1.40143	missing ratio: 19.74842
-task PCBA-602179		pos_ratio: 0.09434	missing ratio: 12.28246
-task PCBA-602233		pos_ratio: 0.04351	missing ratio: 13.78520
-task PCBA-602310		pos_ratio: 0.07864	missing ratio: 10.38596
-task PCBA-602313		pos_ratio: 0.20453	missing ratio: 15.18768
-task PCBA-602332		pos_ratio: 0.01718	missing ratio: 6.03574
-task PCBA-624170		pos_ratio: 0.20997	missing ratio: 9.37451
-task PCBA-624171		pos_ratio: 0.31369	missing ratio: 9.98879
-task PCBA-624173		pos_ratio: 0.12244	missing ratio: 8.83480
-task PCBA-624202		pos_ratio: 1.08398	missing ratio: 16.67428
-task PCBA-624246		pos_ratio: 0.02767	missing ratio: 17.00916
-task PCBA-624287		pos_ratio: 0.13976	missing ratio: 31.19153
-task PCBA-624288		pos_ratio: 0.41799	missing ratio: 26.24681
-task PCBA-624291		pos_ratio: 0.06686	missing ratio: 24.51536
-task PCBA-624296		pos_ratio: 3.37351	missing ratio: 33.51225
-task PCBA-624297		pos_ratio: 2.01949	missing ratio: 29.91113
-task PCBA-624417		pos_ratio: 1.97002	missing ratio: 25.92375
-task PCBA-651635		pos_ratio: 1.09551	missing ratio: 21.05837
-task PCBA-651644		pos_ratio: 0.21114	missing ratio: 19.35307
-task PCBA-651768		pos_ratio: 0.46886	missing ratio: 18.68514
-task PCBA-651965		pos_ratio: 1.96843	missing ratio: 25.79440
-task PCBA-652025		pos_ratio: 0.06531	missing ratio: 17.15534
-task PCBA-652104		pos_ratio: 1.89989	missing ratio: 14.54976
-task PCBA-652105		pos_ratio: 1.26379	missing ratio: 26.69445
-task PCBA-652106		pos_ratio: 0.13773	missing ratio: 17.46794
-task PCBA-686970		pos_ratio: 1.76886	missing ratio: 23.37296
-task PCBA-686978		pos_ratio: 20.82252	missing ratio: 31.07695
-task PCBA-686979		pos_ratio: 15.85013	missing ratio: 29.53124
-task PCBA-720504		pos_ratio: 2.90285	missing ratio: 20.30428
-task PCBA-720532		pos_ratio: 7.74621	missing ratio: 97.04749
-task PCBA-720542		pos_ratio: 0.20592	missing ratio: 18.85155
-task PCBA-720551		pos_ratio: 0.36889	missing ratio: 22.03868
-task PCBA-720553		pos_ratio: 0.96084	missing ratio: 22.86507
-task PCBA-720579		pos_ratio: 0.67826	missing ratio: 35.47673
-task PCBA-720580		pos_ratio: 0.49409	missing ratio: 30.29080
-task PCBA-720707		pos_ratio: 0.07372	missing ratio: 17.35540
-task PCBA-720708		pos_ratio: 0.18522	missing ratio: 18.74493
-task PCBA-720709		pos_ratio: 0.14630	missing ratio: 19.66158
-task PCBA-720711		pos_ratio: 0.07977	missing ratio: 17.35313
-task PCBA-743255		pos_ratio: 0.24330	missing ratio: 15.71535
-task PCBA-743266		pos_ratio: 0.07667	missing ratio: 9.26584
-task PCBA-875		pos_ratio: 0.04468	missing ratio: 83.21023
-task PCBA-881		pos_ratio: 0.56798	missing ratio: 76.26397
-task PCBA-883		pos_ratio: 15.16303	missing ratio: 98.14533
-task PCBA-884		pos_ratio: 32.69029	missing ratio: 97.61949
-task PCBA-885		pos_ratio: 1.28445	missing ratio: 97.07955
-task PCBA-887		pos_ratio: 1.47660	missing ratio: 84.20326
-task PCBA-891		pos_ratio: 20.01775	missing ratio: 98.20671
-task PCBA-899		pos_ratio: 22.25048	missing ratio: 98.12305
-task PCBA-902		pos_ratio: 1.58359	missing ratio: 72.95294
-task PCBA-903		pos_ratio: 0.64028	missing ratio: 87.99876
-task PCBA-904		pos_ratio: 1.03611	missing ratio: 88.41457
-task PCBA-912		pos_ratio: 0.80136	missing ratio: 87.06347
-task PCBA-914		pos_ratio: 2.80935	missing ratio: 98.21967
-task PCBA-915		pos_ratio: 5.47758	missing ratio: 98.16966
-task PCBA-924		pos_ratio: 0.95768	missing ratio: 72.72378
-task PCBA-925		pos_ratio: 0.06077	missing ratio: 85.40955
-task PCBA-926		pos_ratio: 0.61732	missing ratio: 87.11030
-task PCBA-927		pos_ratio: 0.10404	missing ratio: 86.67085
-task PCBA-938		pos_ratio: 2.84961	missing ratio: 85.77512
-task PCBA-995		pos_ratio: 1.06553	missing ratio: 85.04330
-39.42927080420495
-'''
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172

@@ -194,9 +194,3 @@ class MoleculeContextualDataset(InMemoryDataset):
 
     def process(self):
         return
-
-
-if __name__ == "__main__":
-    dataset = "GEOM_3D_nmol50000_nconf1_nupper1000"
-    root = os.path.join("../../datasets", dataset)
-    dataset = MoleculeContextualDataset(root, dataset=dataset)

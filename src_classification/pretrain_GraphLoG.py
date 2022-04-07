@@ -105,26 +105,6 @@ def inter_NCE_loss(graph_reps, graph_mask_reps, device, tau=0.1, epsilon=1e-6):
     return NCE_loss, correct_cnt
 
 
-# # InfoNCE loss for global-local mutual information maximization
-# def gl_NCE_loss(node_reps, graph_reps, batch, tau=0.1, epsilon=1e-6):
-#     node_reps_norm = torch.norm(node_reps, dim = 1).unsqueeze(-1)
-#     graph_reps_norm = torch.norm(graph_reps, dim = 1).unsqueeze(-1)
-#     sim = torch.mm(node_reps, graph_reps.t()) / (
-#             torch.mm(node_reps_norm, graph_reps_norm.t()) + epsilon)
-#     exp_sim = torch.exp(sim / tau)
-#
-#     mask = torch.stack([(batch == i).float() for i in range(graph_reps.shape[0])], dim = 1)
-#     positive = exp_sim * mask
-#     negative = exp_sim * (1 - mask)
-#     positive_ratio = positive / (positive + negative.sum(0).unsqueeze(0) + epsilon)
-#
-#     NCE_loss = -torch.log(positive_ratio + (1 - mask)).sum() / node_reps.shape[0]
-#     thr = 1. / ((1 - mask).sum(0) + 1.).unsqueeze(0)
-#     correct_cnt = (positive_ratio > thr).float().sum()
-#
-#     return NCE_loss, correct_cnt
-
-
 # InfoNCE loss between graphs and prototypes
 def proto_NCE_loss(graph_reps, graph_mask_reps, proto_list,
                    proto_connection, tau=0.1, decay_ratio=0.7, epsilon=1e-6):
@@ -480,11 +460,7 @@ if __name__ == "__main__":
 
     # set up dataset and transform function.
     if 'GEOM' in args.dataset:
-        dataset = MoleculeDataset('../datasets/{}/'.format(args.dataset),
-                                  dataset=args.dataset)
-    else:
-        dataset = MoleculeDataset('../datasets/molecule_datasets/' + args.dataset,
-                                  dataset=args.dataset)
+        dataset = MoleculeDataset('../datasets/{}/'.format(args.dataset), dataset=args.dataset)
 
     loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True,
                         num_workers=args.num_workers)

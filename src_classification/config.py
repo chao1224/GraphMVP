@@ -11,9 +11,6 @@ parser.add_argument('--device', type=int, default=0)
 parser.add_argument('--input_data_dir', type=str, default='')
 parser.add_argument('--dataset', type=str, default='bace')
 parser.add_argument('--num_workers', type=int, default=8)
-# parser.add_argument('--data_dir_chirality', type=str)
-# parser.set_defaults(
-#     data_dir_chirality='../datasets/chirality/d4_docking/d4_docking_rs.csv')
 
 # about training strategies
 parser.add_argument('--split', type=str, default='scaffold')
@@ -22,8 +19,7 @@ parser.add_argument('--epochs', type=int, default=100)
 parser.add_argument('--lr', type=float, default=0.001)
 parser.add_argument('--lr_scale', type=float, default=1)
 parser.add_argument('--decay', type=float, default=0)
-# parser.add_argument('--split_path', type=str)  # used in chirality
-# parser.set_defaults(split_path='../datasets/chirality/d4_docking/rs/split0.npy')
+
 # about molecule GNN
 parser.add_argument('--gnn_type', type=str, default='gin')
 parser.add_argument('--num_layer', type=int, default=5)
@@ -59,8 +55,6 @@ parser.add_argument('--normalize', dest='normalize', action='store_true')
 parser.add_argument('--no_normalize', dest='normalize', action='store_false')
 parser.add_argument('--SSL_masking_ratio', type=float, default=0)
 # This is for generative SSL.
-# AE is auto-encoding, or representation reconstruction (RR).
-# VAE is variational auto-encoding, or variational representation reconstruction (VRR).
 parser.add_argument('--AE_model', type=str, default='AE', choices=['AE', 'VAE'])
 parser.set_defaults(AE_model='AE')
 
@@ -73,15 +67,7 @@ parser.set_defaults(detach_target=True)
 # for 2D-3D Variational AutoEncoder
 parser.add_argument('--beta', type=float, default=1)
 
-# # for 2D-3D Variational AutoEncoder with Flow
-# parser.add_argument('--flow_model', type=str, default='planar', choices=['planar', 'radial', 'mlp'])
-# parser.add_argument('--flow_length', type=int, default=8)
-
-# # for Importance Weighted AutoEncoder
-# parser.add_argument('--iw_samples', type=int, default=5)
-
 # for 2D-3D Contrastive CL and AE/VAE
-# parser.add_argument('--alpha', type=float, default=1)
 parser.add_argument('--alpha_1', type=float, default=1)
 parser.add_argument('--alpha_2', type=float, default=1)
 

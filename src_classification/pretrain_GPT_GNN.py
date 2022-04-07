@@ -46,7 +46,6 @@ def train(device, loader, optimizer):
 
 
 if __name__ == '__main__':
-
     torch.manual_seed(0)
     np.random.seed(0)
     device = torch.device('cuda:' + str(args.device)) \
@@ -57,8 +56,6 @@ if __name__ == '__main__':
 
     if 'GEOM' in args.dataset:
         molecule_dataset = MoleculeDataset('../datasets/{}/'.format(args.dataset), dataset=args.dataset)
-    else:
-        molecule_dataset = MoleculeDataset('../datasets/molecule_datasets/' + args.dataset, dataset=args.dataset)
     molecule_gpt_dataset = MoleculeDatasetGPT(molecule_dataset)
     loader = DataLoader(molecule_gpt_dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
 

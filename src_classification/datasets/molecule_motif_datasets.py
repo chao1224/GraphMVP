@@ -7,12 +7,6 @@ from descriptastorus.descriptors import rdDescriptors
 from torch_geometric.data import Data, InMemoryDataset
 from tqdm import tqdm
 
-<<<<<<< HEAD
-=======
-#  pip install git+https://github.com/bp-kelley/descriptastorus
-
-
->>>>>>> 2d7d2a3c5cb1f4aa6a6dc08bebd8d126e2f14172
 
 RDKIT_PROPS = ['fr_Al_COO', 'fr_Al_OH', 'fr_Al_OH_noTert', 'fr_ArN',
                'fr_Ar_COO', 'fr_Ar_N', 'fr_Ar_NH', 'fr_Ar_OH', 'fr_COO', 'fr_COO2',

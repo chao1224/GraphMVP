@@ -16,11 +16,6 @@ def generate_scaffold(smiles, include_chirality=False):
     return scaffold
 
 
-# # test generate_scaffold
-# s = 'Cc1cc(Oc2nccc(CCC)c2)ccc1'
-# scaffold = generate_scaffold(s)
-# assert scaffold == 'c1ccc(Oc2ccccn2)cc1'
-
 def scaffold_split(dataset, smiles_list, task_idx=None, null_value=0,
                    frac_train=0.8, frac_valid=0.1, frac_test=0.1,
                    return_smiles=False):
@@ -232,84 +227,3 @@ def cv_random_split(dataset, fold_idx=0,
     valid_dataset = dataset[torch.tensor(val_idx)]
 
     return train_dataset, valid_dataset
-
-
-if __name__ == "__main__":
-
-    pass
-
-    # from loader import MoleculeDataset
-    # from rdkit import Chem
-    # import pandas as pd
-    #
-    # # # test scaffold_split
-    # dataset = MoleculeDataset('dataset/tox21', dataset='tox21')
-    # smiles_list = pd.read_csv('dataset/tox21/processed/smiles.csv', header=None)[0].tolist()
-    #
-    # train_dataset, valid_dataset, test_dataset = scaffold_split(
-    #     dataset, smiles_list, task_idx=None, null_value=0,
-    #     frac_train=0.8, frac_valid=0.1, frac_test=0.1)
-    # unique_ids = set(train_dataset.data.id.tolist() +
-    #                  valid_dataset.data.id.tolist() +
-    #                  test_dataset.data.id.tolist())
-    # assert len(unique_ids) == len(dataset)  # check that we did not have any
-    # # missing or overlapping examples
-    #
-    # # test scaffold_split with smiles returned
-    # dataset = MoleculeDataset('dataset/bbbp', dataset='bbbp')
-    # smiles_list = pd.read_csv('dataset/bbbp/processed/smiles.csv', header=None)[0].tolist()
-    # train_dataset, valid_dataset, test_dataset, (train_smiles, valid_smiles, test_smiles) = \
-    #     scaffold_split(dataset, smiles_list, task_idx=None, null_value=0,
-    #                    frac_train=0.8, frac_valid=0.1, frac_test=0.1,
-    #                    return_smiles=True)
-    # assert len(train_dataset) == len(train_smiles)
-    # for i in range(len(train_dataset)):
-    #     data_obj_n_atoms = train_dataset[i].x.size()[0]
-    #     smiles_n_atoms = len(list(Chem.MolFromSmiles(train_smiles[i]).GetAtoms()))
-    #     assert data_obj_n_atoms == smiles_n_atoms
-    # assert len(valid_dataset) == len(valid_smiles)
-    # for i in range(len(valid_dataset)):
-    #     data_obj_n_atoms = valid_dataset[i].x.size()[0]
-    #     smiles_n_atoms = len(list(Chem.MolFromSmiles(valid_smiles[i]).GetAtoms()))
-    #     assert data_obj_n_atoms == smiles_n_atoms
-    # assert len(test_dataset) == len(test_smiles)
-    # for i in range(len(test_dataset)):
-    #     data_obj_n_atoms = test_dataset[i].x.size()[0]
-    #     smiles_n_atoms = len(list(Chem.MolFromSmiles(test_smiles[i]).GetAtoms()))
-    #     assert data_obj_n_atoms == smiles_n_atoms
-    #
-    # # test random_split
-    # from loader import MoleculeDataset
-    #
-    # dataset = MoleculeDataset('dataset/tox21', dataset='tox21')
-    # train_dataset, valid_dataset, test_dataset = random_split(
-    #     dataset, task_idx=None, null_value=0, frac_train=0.8, frac_valid=0.1, frac_test=0.1)
-    # unique_ids = set(train_dataset.data.id.tolist() +
-    #                  valid_dataset.data.id.tolist() +
-    #                  test_dataset.data.id.tolist())
-    # assert len(unique_ids) == len(dataset)  # check that we did not have any
-    # # missing or overlapping examples
-    #
-    # # test random_split with smiles returned
-    # dataset = MoleculeDataset('dataset/bbbp', dataset='bbbp')
-    # smiles_list = pd.read_csv('dataset/bbbp/processed/smiles.csv', header=None)[
-    #     0].tolist()
-    # train_dataset, valid_dataset, test_dataset, (train_smiles, valid_smiles, test_smiles) = \
-    #     random_split(dataset, task_idx=None, null_value=0,
-    #                  frac_train=0.8, frac_valid=0.1, frac_test=0.1, seed=42,
-    #                  smiles_list=smiles_list)
-    # assert len(train_dataset) == len(train_smiles)
-    # for i in range(len(train_dataset)):
-    #     data_obj_n_atoms = train_dataset[i].x.size()[0]
-    #     smiles_n_atoms = len(list(Chem.MolFromSmiles(train_smiles[i]).GetAtoms()))
-    #     assert data_obj_n_atoms == smiles_n_atoms
-    # assert len(valid_dataset) == len(valid_smiles)
-    # for i in range(len(valid_dataset)):
-    #     data_obj_n_atoms = valid_dataset[i].x.size()[0]
-    #     smiles_n_atoms = len(list(Chem.MolFromSmiles(valid_smiles[i]).GetAtoms()))
-    #     assert data_obj_n_atoms == smiles_n_atoms
-    # assert len(test_dataset) == len(test_smiles)
-    # for i in range(len(test_dataset)):
-    #     data_obj_n_atoms = test_dataset[i].x.size()[0]
-    #     smiles_n_atoms = len(list(Chem.MolFromSmiles(test_smiles[i]).GetAtoms()))
-    #     assert data_obj_n_atoms == smiles_n_atoms

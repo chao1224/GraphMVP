@@ -55,8 +55,6 @@ def eval_general(model, device, loader):
     rmse = mean_squared_error(y_true, y_pred, squared=False)
     mae = mean_absolute_error(y_true, y_pred)
     return {'RMSE': rmse, 'MAE': mae}, y_true, y_pred
-    # r2 = pearsonr(y_true, y_pred)[0] ** 2
-    # return {'RMSE': rmse, 'MAE': mae, 'R2': r2}, y_true, y_pred
 
 
 if __name__ == '__main__':

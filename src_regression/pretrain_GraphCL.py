@@ -55,7 +55,6 @@ if __name__ == "__main__":
     parser.add_argument('--emb_dim', type=int, default=300, help='embedding dimensions')
     parser.add_argument('--dataset', type=str, default=None, help='root dir of dataset')
     parser.add_argument('--num_layer', type=int, default=5, help='message passing layers')
-    # parser.add_argument('--seed', type=int, default=0, help="Seed for splitting dataset")
     parser.add_argument('--output_model_file', type=str, default='', help='model save path')
     parser.add_argument('--num_workers', type=int, default=8, help='workers for dataset loading')
 
@@ -76,8 +75,6 @@ if __name__ == "__main__":
     # set up dataset
     if 'GEOM' in args.dataset:
         dataset = MoleculeDataset_graphcl_complete('../datasets/{}/'.format(args.dataset), dataset=args.dataset)
-    else:
-        dataset = MoleculeDataset_graphcl_complete('../datasets/molecule_datasets/' + args.dataset, dataset=args.dataset)
     dataset.set_augMode(args.aug_mode)
     dataset.set_augStrength(args.aug_strength)
     print(dataset)

@@ -1,6 +1,3 @@
-#  Copyright (c) 2021. Shengchao & Hanchen
-#  liusheng@mila.quebec & hw501@cam.ac.uk
-#  Ref: https://github.com/snap-stanford/pretrain-gnns/blob/master/bio/model.py
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

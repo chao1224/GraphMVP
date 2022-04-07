@@ -19,9 +19,6 @@ class MoleculeDataset_graphcl(MoleculeDataset):
                  pre_filter=None,
                  dataset=None,
                  empty=False):
-        # self.set_augProb(None)
-        # self.set_augStrength(0.2)
-        # self.set_augMode('no_aug')
 
         self.aug_prob = None
         self.aug_mode = 'no_aug'

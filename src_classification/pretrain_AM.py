@@ -70,11 +70,6 @@ if __name__ == '__main__':
             '../datasets/{}/'.format(args.dataset), dataset=args.dataset,
             transform=MaskAtom(num_atom_type=119, num_edge_type=5,
                                mask_rate=args.mask_rate, mask_edge=args.mask_edge))
-    else:
-        dataset = MoleculeDataset(
-            '../datasets/molecule_datasets/' + args.dataset, dataset=args.dataset,
-            transform=MaskAtom(num_atom_type=119, num_edge_type=5,
-                               mask_rate=args.mask_rate, mask_edge=args.mask_edge))
     loader = DataLoaderMasking(dataset, batch_size=args.batch_size,
                                shuffle=True, num_workers=args.num_workers)
 

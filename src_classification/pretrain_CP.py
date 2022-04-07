@@ -101,15 +101,9 @@ if __name__ == '__main__':
     l2 = l1 + args.csize
     print('num layer: %d l1: %d l2: %d' % (args.num_layer, l1, l2))
 
-    # if args.dataset in ['GEOM', 'GEOM_3D_01', 'GEOM_3D_02', 'GEOM_01_2D',
-    #                     'GEOM_01_2D_New', 'GEOM_02_2D_New', 'GEOM_2D_nmol1000000_nconf5']:
     if 'GEOM' in args.dataset:
         dataset = MoleculeDataset(
             '../datasets/{}/'.format(args.dataset), dataset=args.dataset,
-            transform=ExtractSubstructureContextPair(args.num_layer, l1, l2))
-    else:
-        dataset = MoleculeDataset(
-            '../datasets/molecule_datasets/' + args.dataset, dataset=args.dataset,
             transform=ExtractSubstructureContextPair(args.num_layer, l1, l2))
     loader = DataLoaderSubstructContext(dataset, batch_size=args.batch_size,
                                         shuffle=True, num_workers=args.num_workers)

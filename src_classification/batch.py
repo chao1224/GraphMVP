@@ -139,14 +139,6 @@ class BatchSubstructContext(Data):
         """Constructs a batch object from a python list holding
         :class:`torch_geometric.data.Data` objects.
         The assignment vector :obj:`batch` is created on the fly."""
-        # keys = [set(data.keys) for data in data_list]
-        # keys = list(set.union(*keys))
-        # assert 'batch' not in keys
-
-        # 'x', 'masked_atom_indices', 'edge_attr', 'KG_index', 'mask_node_label', 'edge_index'
-        # keys = [set(data.keys) for data in data_list]
-        # keys = list(set.union(*keys))
-        # print('keys\t', keys)
 
         batch = BatchSubstructContext()
         keys = [
@@ -173,10 +165,6 @@ class BatchSubstructContext(Data):
                 num_nodes = data.num_nodes
                 num_nodes_substruct = len(data.x_substruct)
                 num_nodes_context = len(data.x_context)
-                # print(data.x.size(), '\t', data.x_substruct.size(), '\t', data.x_context.size(), '\t', num_nodes)
-                # print(data)
-                # print(data.keys)
-                # print()
 
                 batch.batch.append(torch.full((num_nodes,), i, dtype=torch.long))
                 batch.batch_overlapped_context.append(
@@ -249,10 +237,6 @@ class BatchSubstructContext3D(Data):
         """Constructs a batch object from a python list holding
         :class:`torch_geometric.data.Data` objects.
         The assignment vector :obj:`batch` is created on the fly."""
-        # keys = [set(data.keys) for data in data_list]
-        # keys = list(set.union(*keys))
-        # print('original keys\t', keys)
-        # assert 'batch' not in keys
 
         batch = BatchSubstructContext()
         keys = [
@@ -261,7 +245,6 @@ class BatchSubstructContext3D(Data):
             'edge_attr_context', 'edge_index_context', 'x_context',
             'positions', 'x', 'edge_attr', 'edge_index'
         ]
-        # print('neo keys\t', keys)
 
         for key in keys:
             batch[key] = []

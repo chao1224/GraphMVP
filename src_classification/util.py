@@ -356,7 +356,6 @@ def reset_idxes(G):
     return new_G, mapping
 
 
-# TODO(Bowen): more unittests
 class MaskAtom:
     def __init__(self, num_atom_type, num_edge_type, mask_rate, mask_edge=True):
         """
@@ -507,47 +506,3 @@ def get_num_task(dataset):
     elif dataset == 'clintox':
         return 2
     raise ValueError('Invalid dataset name.')
-
-
-# def do_CL_backup(X, Y, args):
-#     neg_Y = torch.cat([Y[cycle_index(len(Y), i + 1)] for i in range(args.CL_neg_samples)], dim=0)
-#     neg_X = X.repeat((args.CL_neg_samples, 1))
-#
-#     if args.CL_similarity_metric == 'dot_prod':
-#         pred_pos = torch.sum(X * Y, dim=1) / args.T
-#         pred_neg = torch.sum(neg_X * neg_Y, dim=1) / args.T
-#     elif args.CL_similarity_metric == 'cosine':
-#         # X = F.normalize(X, p=2, dim=1)
-#         # Y = F.normalize(Y, p=2, dim=1)
-#         # neg_X = F.normalize(neg_X, p=2, dim=1)
-#         # neg_Y = F.normalize(neg_Y, p=2, dim=1)
-#         # pred_pos = torch.sum(X * Y, dim=1) / args.T
-#         # pred_neg = torch.sum(neg_X * neg_Y, dim=1) / args.T
-#
-#         pred_pos = cosine_sim(X, Y) / args.T
-#         pred_neg = cosine_sim(neg_X, neg_Y) / args.T
-#     else:
-#         raise Exception
-#
-#     loss_pos = criterion(pred_pos, torch.ones(len(pred_pos)).to(pred_pos.device))
-#     loss_neg = criterion(pred_neg, torch.zeros(len(pred_neg)).to(pred_neg.device))
-#     CL_loss = loss_pos + args.CL_neg_samples * loss_neg
-#
-#     CL_acc = (torch.sum(pred_pos > 0).float() + torch.sum(pred_neg < 0).float()) / (len(pred_pos) + len(pred_neg))
-#     CL_acc = CL_acc.detach().cpu().item()
-#
-#     # logger.info('===============')
-#     # logger.info('pred_pos: {}'.format(pred_pos[:10]))
-#     # logger.info('pred_neg: {}'.format(pred_neg[:10]))
-#     # logger.info('loss_pos: {}'.format(loss_pos.cpu().item()))
-#     # logger.info('loss_neg: {}'.format(loss_neg.cpu().item()))
-#     # if loss_pos.cpu().item() > 10 or loss_neg.cpu().item() > 10:
-#     #     print('===============')
-#     #     print('X\n', X[:5, :10])
-#     #     print('Y\n', Y[:5, :10])
-#     #     print('pred_pos: {}'.format(pred_pos[:10]))
-#     #     print('pred_neg: {}'.format(pred_neg[:10]))
-#     #     print('loss_pos: {}'.format(loss_pos.cpu().item()))
-#     #     print('loss_neg: {}'.format(loss_neg.cpu().item()))
-#
-#     return CL_loss, CL_acc
