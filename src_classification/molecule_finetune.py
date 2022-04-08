@@ -16,7 +16,7 @@ from util import get_num_task
 from datasets import MoleculeDataset
 
 
-def train_general(model, device, loader, optimizer):
+def train(model, device, loader, optimizer):
     model.train()
     total_loss = 0
 
@@ -43,7 +43,7 @@ def train_general(model, device, loader, optimizer):
     return total_loss / len(loader)
 
 
-def eval_general(model, device, loader):
+def eval(model, device, loader):
     model.eval()
     y_true, y_scores = [], []
 
@@ -78,50 +78,6 @@ def eval_general(model, device, loader):
     return sum(roc_list) / len(roc_list), 0, y_true, y_scores
 
 
-def train_one_donor(model, device, loader, optimizer):
-    model.train()
-    total_loss = 0
-
-    for step, batch in enumerate(loader):
-        batch = batch.to(device)
-        pred = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
-        y = batch.y.view(pred.shape).to(torch.float64)
-
-        # Whether y is non-null or not.
-        is_valid = y ** 2 > 0
-        # Loss matrix
-        loss_mat = criterion(pred.double(), y)
-        # loss matrix after removing null target
-        loss_mat = torch.where(
-            is_valid, loss_mat,
-            torch.zeros(loss_mat.shape).to(device).to(loss_mat.dtype))
-
-        optimizer.zero_grad()
-        loss = torch.sum(loss_mat) / torch.sum(is_valid)
-        loss.backward()
-        optimizer.step()
-        total_loss += loss.detach().item()
-
-    return total_loss / len(loader)
-
-
-def eval_one_donor(model, device, loader):
-    model.eval()
-    y_true, y_scores = [], []
-    for step, batch in enumerate(loader):
-        batch = batch.to(device)
-        with torch.no_grad():
-            pred = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
-        true = batch.y.view(pred.shape)
-        y_true.append(true)
-        y_scores.append(pred)
-    y_true = torch.cat(y_true, dim=0).cpu().numpy()
-    y_scores = torch.cat(y_scores, dim=0).cpu().numpy()
-    roc_auc = roc_auc_score(y_true, y_scores)
-    acc = accuracy_score(y_true, y_scores >= 0)
-    return roc_auc, acc, y_true, y_scores
-
-
 if __name__ == '__main__':
     torch.manual_seed(args.runseed)
     np.random.seed(args.runseed)
@@ -136,11 +92,7 @@ if __name__ == '__main__':
     dataset = MoleculeDataset(dataset_folder + args.dataset, dataset=args.dataset)
     print(dataset)
 
-    # TODO: this is only for hacking PCBA, will need further clean-ups later
-    if args.dataset == 'pcba':
-        eval_metric = average_precision_score
-    else:
-        eval_metric = roc_auc_score
+    eval_metric = roc_auc_score
 
     if args.split == 'scaffold':
         smiles_list = pd.read_csv(dataset_folder + args.dataset + '/processed/smiles.csv',
@@ -191,28 +143,20 @@ if __name__ == '__main__':
     optimizer = optim.Adam(model_param_group, lr=args.lr,
                            weight_decay=args.decay)
     criterion = nn.BCEWithLogitsLoss(reduction='none')
-    # print(optimizer)
     train_roc_list, val_roc_list, test_roc_list = [], [], []
     train_acc_list, val_acc_list, test_acc_list = [], [], []
     best_val_roc, best_val_idx = -1, 0
 
-    if args.dataset == 'donor':
-        train_func = train_one_donor
-        eval_func = eval_one_donor
-    else:
-        train_func = train_general
-        eval_func = eval_general
-
     for epoch in range(1, args.epochs + 1):
-        loss_acc = train_func(model, device, train_loader, optimizer)
+        loss_acc = train(model, device, train_loader, optimizer)
         print('Epoch: {}\nLoss: {}'.format(epoch, loss_acc))
 
         if args.eval_train:
-            train_roc, train_acc, train_target, train_pred = eval_func(model, device, train_loader)
+            train_roc, train_acc, train_target, train_pred = eval(model, device, train_loader)
         else:
             train_roc = train_acc = 0
-        val_roc, val_acc, val_target, val_pred = eval_func(model, device, val_loader)
-        test_roc, test_acc, test_target, test_pred = eval_func(model, device, test_loader)
+        val_roc, val_acc, val_target, val_pred = eval(model, device, val_loader)
+        test_roc, test_acc, test_target, test_pred = eval(model, device, test_loader)
 
         train_roc_list.append(train_roc)
         train_acc_list.append(train_acc)
@@ -221,8 +165,6 @@ if __name__ == '__main__':
         test_roc_list.append(test_roc)
         test_acc_list.append(test_acc)
         print('train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(train_roc, val_roc, test_roc))
-        if args.dataset == 'donor':
-            print('acc train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(train_acc, val_acc, test_acc))
         print()
 
         if val_roc > best_val_roc:
@@ -241,8 +183,6 @@ if __name__ == '__main__':
                          test_target=test_target, test_pred=test_pred)
 
     print('best train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(train_roc_list[best_val_idx], val_roc_list[best_val_idx], test_roc_list[best_val_idx]))
-    if args.dataset == 'donor':
-        print('best ACC train: {:.6f}\tval: {:.6f}\ttest: {:.6f}'.format(train_acc_list[best_val_idx], val_acc_list[best_val_idx], test_acc_list[best_val_idx]))
 
     if args.output_model_dir is not '':
         output_model_path = join(args.output_model_dir, 'model_final.pth')

@@ -266,26 +266,16 @@ class MoleculeDataset(InMemoryDataset):
         def shared_extractor(smiles_list, rdkit_mol_objs, labels):
             data_list = []
             data_smiles_list = []
+            if labels.ndim == 1:
+                labels = np.expand_dims(labels, axis=1)
             for i in range(len(smiles_list)):
                 print(i)
                 rdkit_mol = rdkit_mol_objs[i]
+                if rdkit_mol is None:
+                    continue
                 data = mol_to_graph_data_obj_simple(rdkit_mol)
                 data.id = torch.tensor([i])
-                data.y = torch.tensor(labels[i, :])
-                data_list.append(data)
-                data_smiles_list.append(smiles_list[i])
-
-            return data_list, data_smiles_list
-
-        def shared_single_extractor(smiles_list, rdkit_mol_objs, labels):
-            data_list = []
-            data_smiles_list = []
-            for i in range(len(smiles_list)):
-                print(i)
-                rdkit_mol = rdkit_mol_objs[i]
-                data = mol_to_graph_data_obj_simple(rdkit_mol)
-                data.id = torch.tensor([i])
-                data.y = torch.tensor(labels[i]).unsqueeze(0).float()
+                data.y = torch.tensor(labels[i])
                 data_list.append(data)
                 data_smiles_list.append(smiles_list[i])
 
@@ -454,13 +444,13 @@ class MoleculeDataset(InMemoryDataset):
         elif self.dataset == 'malaria':
             smiles_list, rdkit_mol_objs, labels = \
                 _load_malaria_dataset(self.raw_paths[0])
-            data_list, data_smiles_list = shared_single_extractor(
+            data_list, data_smiles_list = shared_extractor(
                 smiles_list, rdkit_mol_objs, labels)
 
         elif self.dataset == 'cep':
             smiles_list, rdkit_mol_objs, labels = \
                 _load_cep_dataset(self.raw_paths[0])
-            data_list, data_smiles_list = shared_single_extractor(
+            data_list, data_smiles_list = shared_extractor(
                 smiles_list, rdkit_mol_objs, labels)
 
         elif self.dataset == 'muv':

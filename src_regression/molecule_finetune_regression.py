@@ -18,7 +18,7 @@ from splitters import random_scaffold_split, random_split, scaffold_split
 from torch_geometric.data import DataLoader
 
 
-def train_general(model, device, loader, optimizer):
+def train(model, device, loader, optimizer):
     model.train()
     total_loss = 0
 
@@ -37,7 +37,7 @@ def train_general(model, device, loader, optimizer):
     return total_loss / len(loader)
 
 
-def eval_general(model, device, loader):
+def eval(model, device, loader):
     model.eval()
     y_true, y_pred = [], []
 
@@ -117,19 +117,16 @@ if __name__ == '__main__':
     metric_list = ['RMSE', 'MAE']
     best_val_rmse, best_val_idx = 1e10, 0
 
-    train_func = train_general
-    eval_func = eval_general
-
     for epoch in range(1, args.epochs + 1):
-        loss_acc = train_func(model, device, train_loader, optimizer)
+        loss_acc = train(model, device, train_loader, optimizer)
         print('Epoch: {}\nLoss: {}'.format(epoch, loss_acc))
 
         if args.eval_train:
-            train_result, train_target, train_pred = eval_func(model, device, train_loader)
+            train_result, train_target, train_pred = eval(model, device, train_loader)
         else:
             train_result = {'RMSE': 0, 'MAE': 0, 'R2': 0}
-        val_result, val_target, val_pred = eval_func(model, device, val_loader)
-        test_result, test_target, test_pred = eval_func(model, device, test_loader)
+        val_result, val_target, val_pred = eval(model, device, val_loader)
+        test_result, test_target, test_pred = eval(model, device, test_loader)
 
         train_result_list.append(train_result)
         val_result_list.append(val_result)

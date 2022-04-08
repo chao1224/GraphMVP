@@ -40,7 +40,6 @@ if [ "$mode" == "random" ]; then
         bash ./run_dti_finetune.sh \
         --dataset="$dataset" --runseed="$seed" --batch_size="$batch_size" \
         >> "$output_path"
-        # --output_model_dir="$output_model_dir" \
 
         echo `date` >> "$output_path"
     done
@@ -66,8 +65,6 @@ else
         --dataset="$dataset" --runseed="$seed" --batch_size="$batch_size" \
         --input_model_file="$input_model_file" \
         >> "$output_path"
-#        --input_model_file="$input_model_file" --output_model_dir="$output_model_dir" \
-#        >> "$output_path"
 
         echo `date` >> "$output_path"
     done

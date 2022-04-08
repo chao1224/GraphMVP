@@ -71,8 +71,6 @@ else
         --dropout_ratio=0.2 --split="$split" \
         --input_model_file="$input_model_file" \
         >> "$output_path"
-#        --input_model_file="$input_model_file" --output_model_dir="$output_model_dir" \
-#        >> "$output_path"
 
         echo `date` >> "$output_path"
     done
