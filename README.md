@@ -69,7 +69,7 @@ pip install torch-geometric==1.7.2
 
 ## Dataset Preprocessing
 
-For dataset download, please follow the instruction [here](https://github.com/chao1224/GraphMVP/datasets).
+For dataset download, please follow the instruction [here](https://github.com/chao1224/GraphMVP/tree/main/datasets).
 
 For data preprocessing (GEOM), please use the following commands:
 ```
