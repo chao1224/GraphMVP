@@ -11,9 +11,6 @@ from torch_scatter import scatter_add
 
 class GINConv(MessagePassing):
     def __init__(self, emb_dim, aggr="add"):
-        '''
-            emb_dim (int): node embedding dimensionality
-        '''
         super(GINConv, self).__init__(aggr=aggr)
 
         self.mlp = torch.nn.Sequential(torch.nn.Linear(emb_dim, 2*emb_dim), torch.nn.BatchNorm1d(2*emb_dim), torch.nn.ReLU(), torch.nn.Linear(2*emb_dim, emb_dim))
@@ -47,7 +44,6 @@ class GCNConv(MessagePassing):
 
         row, col = edge_index
 
-        #edge_weight = torch.ones((edge_index.size(1), ), device=edge_index.device)
         deg = degree(row, x.size(0), dtype = x.dtype) + 1
         deg_inv_sqrt = deg.pow(-0.5)
         deg_inv_sqrt[deg_inv_sqrt == float('inf')] = 0
@@ -64,18 +60,6 @@ class GCNConv(MessagePassing):
 
 
 class GNNComplete(nn.Module):
-    """
-    Wrapper for GIN/GCN/GAT/GraphSAGE
-    Args:
-        num_layer (int): the number of GNN layers
-        emb_dim (int): dimensionality of embeddings
-        JK (str): last, concat, max or sum
-        drop_ratio (float): dropout rate
-        gnn_type (str): gin, gcn, graphsage, gat
-
-    Output:
-        node representations """
-
     def __init__(self, num_layer, emb_dim, JK="last", drop_ratio=0., gnn_type="gin"):
 
         if num_layer < 2:
@@ -142,19 +126,6 @@ class GNNComplete(nn.Module):
 
 
 class GNN_graphpredComplete(nn.Module):
-    """
-    Extension of GIN to incorporate edge information by concatenation.
-
-    Args:
-        args.num_layer (int): the number of GNN layers
-        arg.emb_dim (int): dimensionality of embeddings
-        num_tasks (int): number of tasks in multi-task learning scenario
-        args.JK (str): last, concat, max or sum.
-        args.graph_pooling (str): sum, mean, max, attention, set2set
-
-    See https://arxiv.org/abs/1810.00826
-    JK-net: https://arxiv.org/abs/1806.03536 """
-
     def __init__(self, args, num_tasks, molecule_model=None):
         super(GNN_graphpredComplete, self).__init__()
 
