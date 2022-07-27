@@ -81,29 +81,7 @@ mkdir -p dti_datasets
 cd dti_datasets
 ```
 
-Then download DAVIS and KIBA here using:
-- https://drive.google.com/uc?export=download&id=14h-0YyHN8lxuc0KV3whsaSaA-4KSmiVN
-- https://drive.google.com/uc?export=download&id=1fb3ZI-3_865OuRMWNMzLPnbLm9CktM44
-
-Then move to the raw files.
-```
-mkdir -p davis
-cd davis
-mv ../DAVIS.zip .
-unzip DAVIS.zip
-mv DAVIS raw
-cd ..
-
-mkdir -p kiba
-cd kiba
-mv ../KIBA.zip .
-unzip KIBA.zip
-mv KIBA raw
-cd ..
-```
-
-TODO:
-Or we can follow [DeepDTA](https://github.com/hkmztrk/DeepDTA).
+Then we can follow [DeepDTA](https://github.com/hkmztrk/DeepDTA).
 ```
 git clone git@github.com:hkmztrk/DeepDTA.git
 cp -r DeepDTA/data/davis davis/

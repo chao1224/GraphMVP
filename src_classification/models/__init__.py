@@ -5,6 +5,7 @@ from torch_geometric.nn.inits import uniform
 from .auto_encoder import AutoEncoder, VariationalAutoEncoder
 from .molecule_gnn_model import GNN, GNN_graphpred
 from .schnet import SchNet
+from .dti_model import ProteinModel, MoleculeProteinModel
 
 
 class Discriminator(nn.Module):

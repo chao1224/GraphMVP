@@ -1,0 +1,7 @@
+convert data from DeepDTA for  davis
+68 drugs	68 unique drugs
+
+dataset: davis
+train_fold: 25046
+test_fold: 5010
+len(set(drugs)),len(set(prots)): 68 379

@@ -1,0 +1,7 @@
+convert data from DeepDTA for  kiba
+2111 drugs	2068 unique drugs
+
+dataset: kiba
+train_fold: 98545
+test_fold: 19709
+len(set(drugs)),len(set(prots)): 2068 229
